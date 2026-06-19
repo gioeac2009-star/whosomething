@@ -38,7 +38,7 @@
     border-radius:12px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:8px;touch-action:none;
     box-shadow:0 6px 18px rgba(235,170,190,0.2);
   }
-  .candidate .image{width:100%;height:180px;border-radius:8px;object-fit:cover;background:rgba(0,0,0,0.1);margin-bottom:4px}
+  .candidate .image{width:100%;height:160px;border-radius:8px;object-fit:cover;background:rgba(0,0,0,0.1);margin-bottom:4px}
   .candidate .title{font-size:12px;color:var(--muted)}
   .candidate .name{font-size:16px;font-weight:800;text-align:center;color:#3a3542}
   .candidate .year{font-size:13px;color:var(--muted)}
@@ -57,7 +57,7 @@
   .list-title{font-size:13px;color:var(--muted);margin-bottom:6px}
   .list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}
   .slot{background:rgba(240,232,245,0.7);padding:8px;border-radius:10px;border:1px dashed rgba(201,181,232,0.2);display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .slot .image{width:50px;height:50px;border-radius:6px;object-fit:cover;flex-shrink:0}
+  .slot .image{width:42px;height:42px;border-radius:6px;object-fit:cover;flex-shrink:0}
   .slot .name{font-weight:700}
   .slot .meta{font-size:12px;color:var(--muted)}
   .slot.preview .drag-handle{cursor:grab;font-size:20px;color:rgba(122,111,133,0.5);padding:4px}
@@ -141,8 +141,8 @@
   <div id="winModal" class="modal">
     <div class="modal-content">
       <div class="modal-emoji">🎉</div>
-      <div class="modal-title">Você Venceu!</div>
-      <div class="modal-message">Parabéns! Você conseguiu ordenar todos os monumentos corretamente. Que impressionante!</div>
+      <div class="modal-title">Parabéns!</div>
+      <div class="modal-message">Você completou a rodada. Sua pontuação reflete o número de acertos entre os 10 candidatos.</div>
       <div class="modal-score" id="winScore" style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:16px">Pontuação: 10/10</div>
       <button class="modal-button" id="winPlayAgainBtn">Jogar Novamente</button>
     </div>
@@ -179,6 +179,7 @@ let placed = [];
 let candidate = null;
 let selectedInsertIndex = null;
 let lives = 3;
+let gameOver = false;
 const maxLives = 3;
 
 /* DOM */
@@ -209,6 +210,7 @@ function initGame(){
   lives = maxLives;
   candidate = null;
   selectedInsertIndex = null;
+  gameOver = false;
   resultText.textContent = '';
   feedbackEl.textContent = '';
   updateLivesUI();
@@ -231,6 +233,7 @@ function shuffleArray(arr){
 
 /* Pega próximo candidato */
 function pickNextCandidate(){
+  if(gameOver) return;
   if(remainingPool.length === 0){
     candidate = null;
     candidateNameEl.textContent = '—';
@@ -238,7 +241,11 @@ function pickNextCandidate(){
     candidateImageEl.src = '';
     remainingEl.textContent = 0;
     nextBtn.disabled = true;
-    checkWin();
+    if(lives > 0){
+      showResult(true);
+    } else {
+      showResult(false);
+    }
     return;
   }
   candidate = remainingPool.shift();
@@ -259,7 +266,7 @@ function renderPlacedList(){
     const li = document.createElement('li');
     li.className = 'slot';
     li.setAttribute('data-id', item.id);
-    li.innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex:1"><img src="${item.image}" alt="${escapeHtml(item.name)}" class="image"><div><div class="name">${escapeHtml(item.name)}</div><div class="meta">${formatYear(item.year)}</div></div></div><div class="meta">#${idx+1}</div>`;
+    li.innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex:1"><img src="${item.image}" alt="${escapeHtml(item.name)}" class="image" loading="lazy" decoding="async"><div><div class="name">${escapeHtml(item.name)}</div><div class="meta">${formatYear(item.year)}</div></div></div><div class="meta">#${idx+1}</div>`;
     placedListEl.appendChild(li);
     placedListEl.appendChild(createDropZone(idx+1));
   });
@@ -271,7 +278,7 @@ function renderPlacedList(){
       targetDz.classList.add('active');
       const preview = document.createElement('li');
       preview.className = 'slot preview';
-      preview.innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex:1"><span class="drag-handle">≡</span><img src="${candidate ? candidate.image : ''}" alt="candidato" class="image"><div><div class="name">${escapeHtml(candidate ? candidate.name : '—')}</div><div class="meta">${candidate ? '?' : ''}</div></div></div><div class="meta">candidato</div>`;
+      preview.innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex:1"><span class="drag-handle">≡</span><img src="${candidate ? candidate.image : ''}" alt="candidato" class="image" loading="lazy" decoding="async"><div><div class="name">${escapeHtml(candidate ? candidate.name : '—')}</div><div class="meta">${candidate ? '?' : ''}</div></div></div><div class="meta">candidato</div>`;
       if(targetDz.nextSibling){
         placedListEl.insertBefore(preview, targetDz.nextSibling);
       } else {
@@ -377,6 +384,7 @@ function updateScore(){
 
 /* Mostrar resultado final */
 function showResult(won){
+  gameOver = true;
   nextBtn.disabled = true;
   candidate = null;
   candidateNameEl.textContent = '—';
@@ -384,7 +392,7 @@ function showResult(won){
   candidateImageEl.src = '';
   renderPlacedList();
   if(won){
-    resultText.textContent = 'Você venceu!';
+    resultText.textContent = placed.length === monuments.length ? 'Você venceu!' : 'Jogo concluído';
     const score = placed.length;
     const total = monuments.length;
     document.getElementById('winScore').textContent = `Pontuação: ${score}/${total}`;
@@ -451,7 +459,7 @@ function createGhost(){
 }
 
 function startDrag(clientX, clientY){
-  if(!candidate) return;
+  if(gameOver || !candidate) return;
   dragging = true;
   startRect = candidateCard.getBoundingClientRect();
   dragOffset.x = clientX - startRect.left;
