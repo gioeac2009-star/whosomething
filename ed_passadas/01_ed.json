@@ -1,11 +1,67 @@
 {
-  "titulo": "Quem é o mais antigo",
-  "instrucao": "Ordene do mais antigo (topo) ao mais novo (fundo)",
-  "ordem": "asc",
+  "titulo": "Quem vendeu mais álbuns?",
+  "instrucao": "Ordene do artista que mais vendeu (topo) ao que menos vendeu (fundo)",
+  "ordem": "desc",
   "itens": [
-    { "nome": "Grande Pirâmide de Gizé (Egito)", "valor": -2560, "textoExibicao": "2560 a.C.", "imagem": "assets/gize.jpg" },
-    { "nome": "Coliseu (Itália)", "valor": 80, "textoExibicao": "80 d.C.", "imagem": "assets/coliseu.jpg" },
-    { "nome": "Taj Mahal (Índia)", "valor": 1653, "textoExibicao": "1653 d.C.", "imagem": "assets/taj_mahal.webp" },
-    { "nome": "Torre Eiffel (França)", "valor": 1889, "textoExibicao": "1889 d.C.", "imagem": "assets/eiffel.jpg" }
+    {
+      "nome": "The Beatles",
+      "valor": 600,
+      "textoExibicao": "+600 milhões",
+      "imagem": "assets/beatles.jpg"
+    },
+    {
+      "nome": "Michael Jackson",
+      "valor": 500,
+      "textoExibicao": "+500 milhões",
+      "imagem": "assets/michael_jackson.jpg"
+    },
+    {
+      "nome": "Elvis Presley",
+      "valor": 400,
+      "textoExibicao": "+400 milhões",
+      "imagem": "assets/elvis.jpg"
+    },
+    {
+      "nome": "Elton John",
+      "valor": 300,
+      "textoExibicao": "+300 milhões",
+      "imagem": "assets/elton_john.jpg"
+    },
+    {
+      "nome": "Madonna",
+      "valor": 250,
+      "textoExibicao": "+250 milhões",
+      "imagem": "assets/madonna.jpg"
+    },
+    {
+      "nome": "Rihanna",
+      "valor": 230,
+      "textoExibicao": "+230 milhões",
+      "imagem": "assets/rihanna.jpg"
+    },
+    {
+      "nome": "Eminem",
+      "valor": 220,
+      "textoExibicao": "+220 milhões",
+      "imagem": "assets/eminem.jpg"
+    },
+    {
+      "nome": "Taylor Swift",
+      "valor": 200,
+      "textoExibicao": "+200 milhões",
+      "imagem": "assets/taylor_swift.jpg"
+    },
+    {
+      "nome": "Beyoncé",
+      "valor": 160,
+      "textoExibicao": "+160 milhões",
+      "imagem": "assets/beyonce.jpg"
+    },
+    {
+      "nome": "Bruno Mars",
+      "valor": 130,
+      "textoExibicao": "+130 milhões",
+      "imagem": "assets/bruno_mars.jpg"
+    }
   ]
 }

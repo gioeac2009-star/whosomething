@@ -1,0 +1,67 @@
+{
+  "titulo": "Quem tem mais Oscars?",
+  "instrucao": "Ordene de quem tem mais prêmios (topo) para quem tem menos (fundo)",
+  "ordem": "desc",
+  "itens": [
+    {
+      "nome": "Walt Disney",
+      "valor": 22,
+      "textoExibicao": "22 prêmios",
+      "imagem": "assets/walt_disney.jpg"
+    },
+    {
+      "nome": "Edith Head",
+      "valor": 8,
+      "textoExibicao": "8 prêmios",
+      "imagem": "assets/edith_head.jpg"
+    },
+    {
+      "nome": "John Williams",
+      "valor": 5,
+      "textoExibicao": "5 prêmios",
+      "imagem": "assets/john_williams.jpg"
+    },
+    {
+      "nome": "Katharine Hepburn",
+      "valor": 4,
+      "textoExibicao": "4 prêmios",
+      "imagem": "assets/katharine_hepburn.jpg"
+    },
+    {
+      "nome": "Meryl Streep",
+      "valor": 3,
+      "textoExibicao": "3 prêmios",
+      "imagem": "assets/meryl_streep.jpg"
+    },
+    {
+      "nome": "Denzel Washington",
+      "valor": 2,
+      "textoExibicao": "2 prêmios",
+      "imagem": "assets/denzel.jpg"
+    },
+    {
+      "nome": "Leonardo DiCaprio",
+      "valor": 1,
+      "textoExibicao": "1 prêmio",
+      "imagem": "assets/dicaprio_oscar.jpg"
+    },
+    {
+      "nome": "Matthew McConaughey",
+      "valor": 1,
+      "textoExibicao": "1 prêmio",
+      "imagem": "assets/mcconaughey.jpg"
+    },
+    {
+      "nome": "Tom Cruise",
+      "valor": 0,
+      "textoExibicao": "Nenhum prêmio",
+      "imagem": "assets/tom_cruise_oscar.jpg"
+    },
+    {
+      "nome": "Amy Adams",
+      "valor": 0,
+      "textoExibicao": "Nenhum prêmio",
+      "imagem": "assets/amy_adams.jpg"
+    }
+  ]
+}

@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Who's something — Edições Passadas</title>
+<style>
+  /* Variáveis do Modo Claro (Refinadas e Coerentes) */
+  :root {
+    --bg: #f8fafc;       
+    --card: #ffffff;     
+    --accent: #8b5cf6;   
+    --muted: #64748b;    
+    --text: #0f172a;     
+    --good: #22c55e;
+    --bad: #ef4444;
+    --glass: rgba(0,0,0,0.04);
+  }
+
+  /* Variáveis do Modo Escuro */
+  .dark-theme {
+    --bg: #121217;       
+    --card: #1e1e26;     
+    --accent: #a78bfa;   
+    --muted: #a1a1aa;    
+    --text: #f8fafc;     
+    --good: #4ade80;     
+    --bad: #f87171;      
+    --glass: rgba(255, 255, 255, 0.05);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial}
+  
+  html, body { min-height: 100%; height: auto; }
+  
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    display:flex;align-items:flex-start;justify-content:center;
+    padding:18px;
+    padding-top: 114px;  
+    min-height: 100vh;
+  }
+
+  .wrap{
+    width:100%;max-width:520px;background:var(--card);
+    border-radius:14px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,0.06);
+    display:flex;flex-direction:column;gap:12px;
+    margin-bottom: 40px; 
+  }
+
+  /* Barra superior fixa */
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 80;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    transition: padding 260ms ease, border-radius 260ms ease, box-shadow 260ms ease;
+  }
+  header.compact {
+    padding-top: 8px;
+    padding-bottom: 10px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+  }
+
+  /* Layout do cabeçalho com Logo */
+  .header-title { width: 100%; text-align: center; }
+  .header-logo {
+    height: 24px;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .header-controls { 
+    display: flex; align-items: center; justify-content: space-between; 
+    width: 100%; max-width: 480px; margin: 0 auto; 
+  }
+  
+  .menu-wrapper { position: relative; }
+
+  .menu{position:relative}
+  .menu-button{background:var(--bg);border:1px solid #e2e8f0;border-radius:50%;width:38px;height:38px;padding:0;color:var(--text);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.04)}
+  .menu-button:hover{background:#f1f5f9}
+  .menu-button .icon { font-size: 18px; margin: 0; padding: 0; display: block; }
+  
+  /* Estilo para o botão "Voltar" (não é redondo) */
+  .btn-voltar {
+    background:var(--bg);border:1px solid #e2e8f0;border-radius:12px;padding:8px 14px;color:var(--text);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.04); font-size: 13px; font-weight: 700; text-decoration: none;
+  }
+  .btn-voltar:hover { background:#f1f5f9; }
+
+  .dark-theme .menu-button, .dark-theme .btn-voltar {background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)}
+  .dark-theme .menu-button:hover, .dark-theme .btn-voltar:hover {background:rgba(255,255,255,0.1)}
+  
+  .menu-panel{position:absolute;top:calc(100% + 8px);right:0;min-width:220px;background:var(--card);border:1px solid #e2e8f0;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,0.12);padding:10px;display:none;flex-direction:column;gap:8px;z-index:50}
+  .dark-theme .menu-panel{border-color:rgba(255,255,255,0.08);box-shadow:0 20px 40px rgba(0,0,0,0.5);}
+  .menu.active .menu-panel{display:flex}
+
+  .menu-item {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px;
+    background: #f8fafc; 
+    border: 1px solid #e2e8f0; 
+    cursor: pointer; color: var(--text); font-size: 14px; font-weight: 700; text-align: left;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .menu-item:hover { background: #f1f5f9; }
+  .menu-item .icon { font-size: 16px; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 8px; background: transparent; border: none; padding: 4px; }
+  
+  .dark-theme .menu-item {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .dark-theme .menu-item:hover { background: rgba(255, 255, 255, 0.15); }
+
+  .page-title { font-size: 20px; font-weight: 800; color: var(--text); text-align: center; margin: 10px 0 0 0; }
+  .page-desc { font-size: 14px; color: var(--muted); text-align: center; margin-bottom: 8px;}
+
+  /* Grid do Catálogo (2 quadrados por linha) */
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 8px;
+  }
+
+  .edition-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 16px;
+    aspect-ratio: 1; /* Força a ser um quadrado */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .edition-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(139, 92, 246, 0.15);
+    border-color: #ddd6fe;
+  }
+
+  .dark-theme .edition-card {
+    border-color: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.02);
+  }
+  
+  .dark-theme .edition-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(167, 139, 250, 0.3);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.6);
+  }
+
+  .edition-number {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(139, 92, 246, 0.1);
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .edition-title {
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+
+  @media(min-width:720px){
+    body{
+      padding:28px;
+      padding-top: 130px; 
+    }
+    .wrap{
+      padding:24px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="header-title">
+        <img src="assets/logo.png" alt="Who's something" class="header-logo">
+      </div>
+      <div class="header-controls">
+        <div style="flex:1">
+          <a href="index.html" class="btn-voltar">← Voltar</a>
+        </div>
+        
+        <div style="flex:1; display:flex; justify-content:center;">
+          </div>
+
+        <div style="flex:1; display:flex; justify-content:flex-end;">
+          <div class="menu" id="appMenu">
+            <button type="button" class="menu-button" id="menuToggle" aria-expanded="false" aria-controls="menuPanel" aria-label="Menu">
+              <span class="icon">☰</span>
+            </button>
+            <div class="menu-panel" id="menuPanel" role="menu">
+              <a href="index.html" class="menu-item"><span class="icon">▶️</span> Edição da Semana</a>
+              <button type="button" class="menu-item" id="themeToggleBtn" role="menuitem"><span class="icon" id="themeIcon">🌙</span> Modo Escuro</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main style="display:flex; flex-direction:column; gap:16px;">
+      <h2 class="page-title">Edições Passadas</h2>
+      <p class="page-desc">Explore o arquivo e jogue as edições que você perdeu.</p>
+
+      <div id="catalogGrid" class="catalog-grid" aria-live="polite">
+        <div style="grid-column: span 2; text-align: center; color: var(--muted); font-size: 14px; padding: 20px;">
+          Buscando o arquivo de edições...
+        </div>
+      </div>
+    </main>
+  </div>
+
+<script>
+/* Theme handling */
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+let themeIcon = document.getElementById('themeIcon');
+const appMenu = document.getElementById('appMenu');
+const menuToggle = document.getElementById('menuToggle');
+
+function applyTheme(theme){
+  if(theme === 'dark'){
+    document.body.classList.add('dark-theme');
+    if(themeToggleBtn) themeToggleBtn.innerHTML = `<span class="icon" id="themeIcon">☀️</span> Modo Claro`;
+    themeIcon = document.getElementById('themeIcon');
+  } else {
+    document.body.classList.remove('dark-theme');
+    if(themeToggleBtn) themeToggleBtn.innerHTML = `<span class="icon" id="themeIcon">🌙</span> Modo Escuro`;
+    themeIcon = document.getElementById('themeIcon');
+  }
+}
+
+function initTheme(){
+  try{
+    const stored = localStorage.getItem('theme') || 'light';
+    applyTheme(stored);
+  }catch(e){
+    applyTheme('light');
+  }
+}
+
+if(themeToggleBtn){
+  themeToggleBtn.addEventListener('click', () => {
+    const cur = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+    const next = cur === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try{ localStorage.setItem('theme', next); }catch(e){}
+    appMenu.classList.remove('active');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  });
+}
+
+menuToggle.addEventListener('click', () => {
+  const expanded = appMenu.classList.toggle('active');
+  menuToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+});
+
+window.addEventListener('click', (event) => {
+  if(!event.target.closest('.menu')) {
+    appMenu.classList.remove('active');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  }
+});
+
+/* Compact header on scroll */
+(function(){
+  const headerEl = document.querySelector('header');
+  if(!headerEl) return;
+  let ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY || window.pageYOffset;
+      if(y > 40) headerEl.classList.add('compact');
+      else headerEl.classList.remove('compact');
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+
+/* Lógica do Catálogo Invertida (Mais recente primeiro) */
+async function loadCatalog() {
+  const grid = document.getElementById('catalogGrid');
+  let currentEdition = 1;
+  let keepSearching = true;
+  let cardsHTML = []; // Array para guardar os cards
+  let foundAny = false;
+
+  while (keepSearching) {
+    const numStr = currentEdition.toString().padStart(2, '0');
+    const filePath = `ed_passadas/${numStr}_ed.json`;
+
+    try {
+      const response = await fetch(filePath);
+      
+      if (response.ok) {
+        const data = await response.json();
+        foundAny = true;
+        
+        // Adiciona o card gerado na nossa lista
+        cardsHTML.push(`
+          <a href="jogar_passada.html?ed=${numStr}" class="edition-card">
+            <div class="edition-number">Edição #${numStr}</div>
+            <div class="edition-title">${data.titulo}</div>
+          </a>
+        `);
+        
+        currentEdition++; // Tenta o próximo número
+      } else {
+        // Erro 404 - para a busca
+        keepSearching = false;
+      }
+    } catch (error) {
+      keepSearching = false;
+    }
+  }
+
+  // Atualiza a tela com o resultado final, invertendo a ordem do Array
+  if (foundAny) {
+    grid.innerHTML = cardsHTML.reverse().join('');
+  } else {
+    grid.innerHTML = `
+      <div style="grid-column: span 2; text-align: center; color: var(--muted); font-size: 14px; padding: 20px; background: rgba(0,0,0,0.02); border-radius: 12px; border: 1px dashed #e2e8f0;">
+        Nenhuma edição passada encontrada na pasta 'ed_passadas'.<br>Mova seus arquivos JSON para lá para vê-los aqui!
+      </div>
+    `;
+  }
+}
+
+// Inicia os scripts
+initTheme();
+loadCatalog();
+
+</script>
+</body>
+</html>

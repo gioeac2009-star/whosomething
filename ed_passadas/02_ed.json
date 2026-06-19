@@ -1,11 +1,67 @@
 {
-  "titulo": "Quem é o mais antigo v2",
-  "instrucao": "Ordene do mais antigo (topo) ao mais novo (fundo)",
-  "ordem": "asc",
+  "titulo": "Quem é o ator mais alto?",
+  "instrucao": "Ordene do ator mais alto (topo) ao mais baixo (fundo)",
+  "ordem": "desc",
   "itens": [
-    { "nome": "Grande Pirâmide de Gizé (Egito)", "valor": -2560, "textoExibicao": "2560 a.C.", "imagem": "assets/gize.jpg" },
-    { "nome": "Coliseu (Itália)", "valor": 80, "textoExibicao": "80 d.C.", "imagem": "assets/coliseu.jpg" },
-    { "nome": "Taj Mahal (Índia)", "valor": 1653, "textoExibicao": "1653 d.C.", "imagem": "assets/taj_mahal.webp" },
-    { "nome": "Torre Eiffel (França)", "valor": 1889, "textoExibicao": "1889 d.C.", "imagem": "assets/eiffel.jpg" }
+    {
+      "nome": "Brad Garrett",
+      "valor": 204,
+      "textoExibicao": "2,04 m",
+      "imagem": "assets/brad_garrett.jpg"
+    },
+    {
+      "nome": "Dwayne 'The Rock' Johnson",
+      "valor": 196,
+      "textoExibicao": "1,96 m",
+      "imagem": "assets/the_rock.jpg"
+    },
+    {
+      "nome": "Chris Hemsworth",
+      "valor": 190,
+      "textoExibicao": "1,90 m",
+      "imagem": "assets/chris_hemsworth.jpg"
+    },
+    {
+      "nome": "Leonardo DiCaprio",
+      "valor": 183,
+      "textoExibicao": "1,83 m",
+      "imagem": "assets/dicaprio.jpg"
+    },
+    {
+      "nome": "Tom Hardy",
+      "valor": 175,
+      "textoExibicao": "1,75 m",
+      "imagem": "assets/tom_hardy.jpg"
+    },
+    {
+      "nome": "Tom Holland",
+      "valor": 173,
+      "textoExibicao": "1,73 m",
+      "imagem": "assets/tom_holland.jpg"
+    },
+    {
+      "nome": "Tom Cruise",
+      "valor": 170,
+      "textoExibicao": "1,70 m",
+      "imagem": "assets/tom_cruise.jpg"
+    },
+    {
+      "nome": "Daniel Radcliffe",
+      "valor": 165,
+      "textoExibicao": "1,65 m",
+      "imagem": "assets/daniel_radcliffe.jpg"
+    },
+    {
+      "nome": "Kevin Hart",
+      "valor": 157,
+      "textoExibicao": "1,57 m",
+      "imagem": "assets/kevin_hart.jpg"
+    },
+    {
+      "nome": "Danny DeVito",
+      "valor": 147,
+      "textoExibicao": "1,47 m",
+      "imagem": "assets/danny_devito.jpg"
+    }
   ]
 }

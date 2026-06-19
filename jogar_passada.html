@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Who's something — O Jogo de Ordenação</title>
+<title>Who's something — Arquivo de Edições</title>
 <style>
   /* Variáveis do Modo Claro (Refinadas e Coerentes) */
   :root {
@@ -75,13 +75,29 @@
     box-shadow: 0 6px 18px rgba(0,0,0,0.04);
   }
 
-  /* Layout do cabeçalho com Logo */
-  .header-title { width: 100%; text-align: center; }
+  /* Layout do cabeçalho com Logo e Badge de Arquivo */
+  .header-title { 
+    width: 100%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 8px; 
+  }
   .header-logo {
     height: 24px;
     width: auto;
     display: block;
-    margin: 0 auto;
+    margin: 0;
+  }
+  .header-archive-badge {
+    font-size: 10px;
+    font-weight: 800;
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--accent);
+    padding: 3px 6px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
   
   .header-controls { 
@@ -110,7 +126,7 @@
     background: #f8fafc; 
     border: 1px solid #e2e8f0; 
     cursor: pointer; color: var(--text); font-size: 14px; font-weight: 700; text-align: left;
-    text-decoration: none; /* Garante que o link não fique sublinhado */
+    text-decoration: none; 
     transition: background 0.2s;
   }
   .menu-item:hover { background: #f1f5f9; }
@@ -151,6 +167,9 @@
     border: 1px solid rgba(167, 139, 250, 0.15);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
+
+  #feedback{min-height:22px;padding:8px 10px;border-radius:10px;background:#f8fafc; border: 1px solid #f1f5f9; color:var(--muted);text-align:center;font-size:13px; width: 100%;}
+  .dark-theme #feedback { background: rgba(255,255,255,0.03); border-color: transparent; }
 
   .list-area {
     background: #f1f5f9; 
@@ -311,6 +330,7 @@
     <header>
       <div class="header-title">
         <img src="assets/logo.png" alt="Who's something" class="header-logo">
+        <span class="header-archive-badge">Arquivo</span>
       </div>
       <div class="header-controls">
         <div class="lives-wrapper">
@@ -327,7 +347,9 @@
               <span class="icon">☰</span>
             </button>
             <div class="menu-panel" id="menuPanel" role="menu">
+              <a href="index.html" class="menu-item"><span class="icon">▶️</span> Edição da Semana</a>
               <a href="ed_passadas.html" class="menu-item"><span class="icon">📚</span> Edições Passadas</a>
+              <button type="button" class="menu-item" id="restartMenuBtn" role="menuitem"><span class="icon">🔄</span> Reiniciar jogo</button>
               <button type="button" class="menu-item" id="howToPlayBtn" role="menuitem"><span class="icon">❓</span> Como jogar?</button>
               <button type="button" class="menu-item" id="aboutBtn" role="menuitem"><span class="icon">ℹ️</span> Sobre</button>
               <button type="button" class="menu-item" id="themeToggleBtn" role="menuitem"><span class="icon" id="themeIcon">🌙</span> Modo Escuro</button>
@@ -338,7 +360,7 @@
     </header>
 
     <main class="play-area" id="playArea">
-      <h2 class="game-subtitle" id="gameSubtitle">Carregando tema...</h2>
+      <h2 class="game-subtitle" id="gameSubtitle">Carregando edição...</h2>
       
       <div class="center-area" aria-hidden="false">
         <div id="candidateCard" class="candidate" role="button" aria-label="Candidato atual" tabindex="0">
@@ -372,11 +394,11 @@
     <div class="modal-content">
       <div class="modal-emoji">🎉</div>
       <div class="modal-title">Parabéns!</div>
-      <div class="modal-message">Você completou a rodada com sucesso. Volte na próxima edição para um novo desafio!</div>
+      <div class="modal-message">Você completou esta edição arquivada com sucesso!</div>
       <div class="modal-score" id="winScore" style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:16px">Pontuação: 10/10</div>
       
       <div style="display:flex; flex-direction:column; gap:8px;">
-        <button class="modal-button" onclick="shareResult(this)">Compartilhar Resultado</button>
+        <button class="modal-button" id="winPlayAgainBtn">Jogar Novamente</button>
         <button class="modal-button ghost" onclick="closeModal('winModal')">Ver Resultado</button>
       </div>
     </div>
@@ -386,10 +408,10 @@
     <div class="modal-content">
       <div class="modal-emoji">😔</div>
       <div class="modal-title">Fim de Jogo</div>
-      <div class="modal-message">A sua única chance desta edição acabou, mas volte na próxima edição para tentar um novo tema!</div>
+      <div class="modal-message">Você perdeu todas as vidas. Como este é o modo arquivo, você pode tentar novamente!</div>
       
       <div style="display:flex; flex-direction:column; gap:8px; margin-top: 16px;">
-        <button class="modal-button" onclick="shareResult(this)">Compartilhar Resultado</button>
+        <button class="modal-button" id="lossPlayAgainBtn">Tentar Novamente</button>
         <button class="modal-button ghost" onclick="closeModal('lossModal')">Ver Resultado</button>
       </div>
     </div>
@@ -399,7 +421,7 @@
     <div class="modal-content">
       <div class="modal-emoji">🎮</div>
       <div class="modal-title">Como jogar</div>
-      <div class="modal-message">Escolha uma posição para o candidato atual clicando em um dos botões "+ clique para adicionar o item aqui" na lista. Depois pressione Próximo para confirmar. Você perde uma vida se a ordem estiver incorreta. Importante: Você tem apenas uma chance por edição!</div>
+      <div class="modal-message">Escolha uma posição para o candidato atual clicando em um dos botões "+ clique para adicionar o item aqui" na lista. Depois pressione Próximo para confirmar. Você perde uma vida se a ordem estiver incorreta. Como esta é uma edição do arquivo, você pode jogar quantas vezes quiser.</div>
       <button class="modal-button" id="howToPlayCloseBtn">Fechar</button>
     </div>
   </div>
@@ -408,13 +430,13 @@
     <div class="modal-content">
       <div class="modal-emoji">👤</div>
       <div class="modal-title">Sobre</div>
-      <div class="modal-message">Desenvolvido de forma independente por Giovanni Silva. Jogo de ordenação dinâmico inspirado em dinâmicas de chance única.</div>
+      <div class="modal-message">Desenvolvido de forma independente por Giovanni Silva. Jogo de ordenação dinâmico.</div>
       <button class="modal-button" id="aboutCloseBtn">Fechar</button>
     </div>
   </div>
 
 <script>
-/* Mobile drag-to-insert ordering game (Persistent Storage - One Try Mode) */
+/* Mobile drag-to-insert ordering game (Archive Mode - No Saving/No Sharing) */
 
 let gameTheme = null; 
 let remainingPool = [];
@@ -439,6 +461,7 @@ const resultText = document.getElementById('resultText');
 const feedbackEl = document.getElementById('feedback');
 const appMenu = document.getElementById('appMenu');
 const menuToggle = document.getElementById('menuToggle');
+const restartMenuBtn = document.getElementById('restartMenuBtn');
 const howToPlayBtn = document.getElementById('howToPlayBtn');
 const aboutBtn = document.getElementById('aboutBtn');
 const howToPlayCloseBtn = document.getElementById('howToPlayCloseBtn');
@@ -448,145 +471,45 @@ let themeIcon = document.getElementById('themeIcon');
 const gameSubtitle = document.getElementById('gameSubtitle');
 const listTitleDesc = document.getElementById('listTitleDesc');
 
-/* Gerar texto e Compartilhar via Clipboard */
-function shareResult(btnElement) {
-  if(!gameTheme) return;
-  
-  const score = placed.length;
-  const total = gameTheme.itens.length;
-  
-  let hearts = '';
-  for(let i=0; i < maxLives; i++) {
-    hearts += (i < lives) ? '❤️' : '🖤';
-  }
-  
-  const url = window.location.href.split('?')[0]; 
-  const text = `Who's something — ${gameTheme.titulo}\nPontuação: ${score}/${total}\nVidas: ${hearts}\n\nJogue em: ${url}`;
-  
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text).then(() => {
-      showCopiedFeedback(btnElement);
-    }).catch(err => {
-      fallbackCopyTextToClipboard(text, btnElement);
-    });
-  } else {
-    fallbackCopyTextToClipboard(text, btnElement);
-  }
-}
-
-function showCopiedFeedback(btnElement) {
-  const originalText = btnElement.innerHTML;
-  btnElement.innerHTML = 'Copiado! 📋';
-  setTimeout(() => { 
-    btnElement.innerHTML = originalText; 
-  }, 2000);
-}
-
-function fallbackCopyTextToClipboard(text, btnElement) {
-  const textArea = document.createElement("textarea");
-  textArea.value = text;
-  textArea.style.top = "0";
-  textArea.style.left = "0";
-  textArea.style.position = "fixed";
-  document.body.appendChild(textArea);
-  textArea.focus();
-  textArea.select();
-  try {
-    const successful = document.execCommand('copy');
-    if(successful) showCopiedFeedback(btnElement);
-  } catch (err) {
-    console.error('Falha ao copiar', err);
-  }
-  document.body.removeChild(textArea);
-}
-
-/* Salvar Progresso */
-function saveGameState() {
-  if (!gameTheme) return;
-  const state = {
-    titulo: gameTheme.titulo,
-    remainingPool: remainingPool,
-    placed: placed,
-    candidate: candidate,
-    lives: lives,
-    gameOver: gameOver
-  };
-  localStorage.setItem('whos_something_save', JSON.stringify(state));
-}
-
-/* Carregar JSON da Edição Atual */
+/* Carregar JSON baseado no parâmetro da URL (?ed=01) */
 async function loadGameData() {
   try {
-    gameSubtitle.textContent = "Carregando a edição da semana...";
+    gameSubtitle.textContent = "Carregando edição...";
     listTitleDesc.textContent = "Aguarde...";
 
-    const response = await fetch('ed_atual/tema.json');
-    if (!response.ok) throw new Error("Arquivo da edição atual não encontrado.");
+    // Lendo o parâmetro '?ed=' da URL atual
+    const urlParams = new URLSearchParams(window.location.search);
+    const editionId = urlParams.get('ed');
+
+    if (!editionId) {
+      throw new Error("Nenhuma edição especificada na URL.");
+    }
+
+    const response = await fetch(`ed_passadas/${editionId}_ed.json`);
+    if (!response.ok) throw new Error("Arquivo da edição não encontrado.");
 
     gameTheme = await response.json();
-    gameSubtitle.textContent = gameTheme.titulo;
+    gameSubtitle.textContent = gameTheme.titulo; // Atualizado para receber apenas o título
     listTitleDesc.textContent = gameTheme.instrucao;
     
+    // Cria IDs internos para os itens
     gameTheme.itens = gameTheme.itens.map((item, index) => ({...item, id: index + 1}));
     
-    initOrRestoreGame();
+    initGame();
 
   } catch (error) {
     console.error(error);
-    gameSubtitle.textContent = "Erro ao carregar a edição atual";
-    listTitleDesc.textContent = "Certifique-se de que o arquivo 'tema.json' está na pasta 'ed_atual'.";
+    gameSubtitle.textContent = "Edição não encontrada";
+    listTitleDesc.textContent = "Volte para a página de Catálogo e selecione uma edição válida.";
   }
 }
 
-/* Inicializa jogo Novo ou Restaura do LocalStorage */
-function initOrRestoreGame(){
+/* Inicializa jogo Novo (Sem Salvar/Recuperar Dados) */
+function initGame(){
   if (!gameTheme) return; 
   
   candidateCard.style.display = 'flex'; 
   
-  const savedStr = localStorage.getItem('whos_something_save');
-  
-  if (savedStr) {
-    try {
-      const savedState = JSON.parse(savedStr);
-      if (savedState.titulo === gameTheme.titulo) {
-        remainingPool = savedState.remainingPool;
-        placed = savedState.placed;
-        candidate = savedState.candidate;
-        lives = savedState.lives;
-        gameOver = savedState.gameOver;
-        selectedInsertIndex = null;
-
-        updateLivesUI();
-        updateScore();
-        renderPlacedList();
-        
-        if (candidate && !gameOver) {
-          candidateCard.style.display = 'flex';
-          candidateNameEl.textContent = candidate.nome;
-          candidateValueEl.textContent = '?';
-          candidateImageEl.src = candidate.imagem;
-          remainingEl.textContent = remainingPool.length;
-          nextBtn.disabled = true;
-        } else {
-          candidateCard.style.display = 'none';
-          candidateNameEl.textContent = '—';
-          candidateValueEl.textContent = '—';
-          candidateImageEl.src = '';
-          remainingEl.textContent = 0;
-          nextBtn.disabled = true;
-        }
-
-        if (gameOver) {
-          showResult(lives > 0);
-        }
-        return; 
-      }
-    } catch(e) {
-      console.error("Erro ao ler save game", e);
-    }
-  }
-
   remainingPool = shuffleArray([...gameTheme.itens]);
   placed = [];
   lives = maxLives;
@@ -604,8 +527,6 @@ function initOrRestoreGame(){
   updateLivesUI();
   updateScore();
   renderPlacedList();
-
-  saveGameState(); 
 }
 
 /* Embaralha */
@@ -720,7 +641,6 @@ nextBtn.addEventListener('click', () => {
     setFeedback('Correto!', 1400, 'success');
     if(placed.length === gameTheme.itens.length){
       gameOver = true;
-      saveGameState();
       candidate = null;
       candidateCard.style.display = 'none';
       candidateNameEl.textContent = '—';
@@ -732,7 +652,6 @@ nextBtn.addEventListener('click', () => {
       return;
     }
     pickNextCandidate();
-    saveGameState(); 
     renderPlacedList();
   } else {
     lives--;
@@ -740,7 +659,6 @@ nextBtn.addEventListener('click', () => {
     setFeedback('Errado!', 1400, 'error');
     if(lives <= 0){
       gameOver = true;
-      saveGameState();
       showResult(false);
       return;
     }
@@ -750,11 +668,8 @@ nextBtn.addEventListener('click', () => {
     remainingEl.textContent = remainingPool.length;
     nextBtn.disabled = true;
     
-    saveGameState(); 
-
     setTimeout(() => {
       pickNextCandidate();
-      saveGameState();
       renderPlacedList();
     }, 700);
   }
@@ -807,7 +722,7 @@ function closeModal(modalId){
   if(modal) modal.classList.remove('active');
 }
 
-/* NOVO: Feedback flutuante com cores */
+/* Feedback flutuante com cores */
 let feedbackTimeout = null;
 function setFeedback(text, ms = 1400, type = 'info'){
   if(feedbackTimeout) clearTimeout(feedbackTimeout);
@@ -852,6 +767,23 @@ window.addEventListener('click', (event) => {
     appMenu.classList.remove('active');
     menuToggle.setAttribute('aria-expanded', 'false');
   }
+});
+
+// Ações exclusivas dessa página: Jogar novamente (Reiniciar)
+document.getElementById('restartMenuBtn').addEventListener('click', () => {
+  appMenu.classList.remove('active');
+  menuToggle.setAttribute('aria-expanded', 'false');
+  initGame();
+});
+
+document.getElementById('winPlayAgainBtn').addEventListener('click', () => {
+  closeModal('winModal');
+  initGame();
+});
+
+document.getElementById('lossPlayAgainBtn').addEventListener('click', () => {
+  closeModal('lossModal');
+  initGame();
 });
 
 howToPlayBtn.addEventListener('click', () => {
