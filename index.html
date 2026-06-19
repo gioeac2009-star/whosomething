@@ -64,8 +64,10 @@
   .slot.preview .drag-handle:active{cursor:grabbing;color:var(--muted)}
   .slot.preview.dragging-reorder{opacity:0.6;background:rgba(201,181,232,0.15)}
   .slot.preview .image{width:60px;height:60px}
-  .dropzone{height:44px;border-radius:10px;margin:0;display:flex;align-items:center;justify-content:center}
+  .dropzone{height:auto;border-radius:10px;margin:0;display:flex;align-items:center;justify-content:center;padding:6px}
   .dropzone.active{background:rgba(201,181,232,0.25);border:1px solid rgba(201,181,232,0.4)}
+  .dropzone-button{width:100%;border:none;background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;padding:10px 12px;border-radius:10px;text-align:center}
+  .dropzone-button:hover{background:rgba(201,181,232,0.12)}
   .preview{border-style:solid;border-color:rgba(201,181,232,0.3);background:linear-gradient(180deg, rgba(235,227,242,0.7), rgba(230,220,242,0.6))}
 
   .footer{display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -112,7 +114,7 @@
           <img id="candidateImage" class="image" src="" alt="Imagem do candidato">
           <div id="candidateName" class="name">—</div>
           <div id="candidateYear" class="year">—</div>
-          <div class="candidate-hint small">Arraste o cartão para a posição desejada na lista abaixo.</div>
+          <div class="candidate-hint small">Clique em um botão abaixo para escolher a posição do item e depois confirme em Próximo.</div>
         </div>
 
         <div class="controls" style="width:100%">
@@ -278,7 +280,7 @@ function renderPlacedList(){
       targetDz.classList.add('active');
       const preview = document.createElement('li');
       preview.className = 'slot preview';
-      preview.innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex:1"><span class="drag-handle">≡</span><img src="${candidate ? candidate.image : ''}" alt="candidato" class="image" loading="lazy" decoding="async"><div><div class="name">${escapeHtml(candidate ? candidate.name : '—')}</div><div class="meta">${candidate ? '?' : ''}</div></div></div><div class="meta">candidato</div>`;
+      preview.innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex:1"><img src="${candidate ? candidate.image : ''}" alt="candidato" class="image" loading="lazy" decoding="async"><div><div class="name">${escapeHtml(candidate ? candidate.name : '—')}</div><div class="meta">${candidate ? '?' : ''}</div></div></div><div class="meta">candidato</div>`;
       if(targetDz.nextSibling){
         placedListEl.insertBefore(preview, targetDz.nextSibling);
       } else {
@@ -286,7 +288,6 @@ function renderPlacedList(){
       }
     }
   }
-  setupListReordering();
 }
 
 /* Cria dropzone */
@@ -294,9 +295,10 @@ function createDropZone(index){
   const li = document.createElement('li');
   li.className = 'dropzone';
   li.setAttribute('data-index', index);
-  li.style.cursor = 'pointer';
-  li.innerHTML = ``;
-  li.addEventListener('click', () => {
+  li.innerHTML = `<button type="button" class="dropzone-button" aria-label="Adicionar item na posição ${index+1}">+ clique para adicionar o item aqui</button>`;
+  const button = li.querySelector('.dropzone-button');
+  button.addEventListener('click', (event) => {
+    event.stopPropagation();
     if(!candidate) return;
     selectedInsertIndex = index;
     nextBtn.disabled = false;
@@ -652,39 +654,7 @@ window.addEventListener('touchend', (ev) => {
   endListReorder(t.clientX || 0, t.clientY || 0);
 }, {passive:false});
 
-/* Mouse events */
-candidateCard.addEventListener('mousedown', (ev) => {
-  ev.preventDefault();
-  startDrag(ev.clientX, ev.clientY);
-  const onMove = (e) => { moveDrag(e.clientX, e.clientY); };
-  const onUp = (e) => {
-    endDrag(e.clientX, e.clientY);
-    window.removeEventListener('mousemove', onMove);
-    window.removeEventListener('mouseup', onUp);
-  };
-  window.addEventListener('mousemove', onMove);
-  window.addEventListener('mouseup', onUp);
-});
-
-/* Touch events */
-candidateCard.addEventListener('touchstart', (ev) => {
-  if(ev.touches.length !== 1) return;
-  const t = ev.touches[0];
-  startDrag(t.clientX, t.clientY);
-}, {passive:false});
-
-window.addEventListener('touchmove', (ev) => {
-  if(!dragging) return;
-  const t = ev.touches[0];
-  moveDrag(t.clientX, t.clientY);
-  ev.preventDefault();
-}, {passive:false});
-
-window.addEventListener('touchend', (ev) => {
-  if(!dragging) return;
-  const t = (ev.changedTouches && ev.changedTouches[0]) || {};
-  endDrag(t.clientX || 0, t.clientY || 0);
-}, {passive:false});
+/* Dragging disabled: positions are chosen by clicking the buttons between itens */
 
 /* Keyboard accessibility */
 candidateCard.addEventListener('keydown', (ev) => {
