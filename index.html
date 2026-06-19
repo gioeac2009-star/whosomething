@@ -3,106 +3,229 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Who's something — Quem é o mais antigo (mobile)</title>
+<title>Who's something</title>
 <style>
-  :root{
-    --bg:#faf8fc; --card:#f0e8f5; --accent:#c9b5e8; --muted:#7a6f85; --text:#3a3542;
-    --good:#81c784; --bad:#e57373; --glass: rgba(0,0,0,0.03);
+  /* Variáveis do Modo Claro (Refinadas e Coerentes) */
+  :root {
+    --bg: #f8fafc;       
+    --card: #ffffff;     
+    --accent: #8b5cf6;   
+    --muted: #64748b;    
+    --text: #0f172a;     
+    --good: #22c55e;
+    --bad: #ef4444;
+    --glass: rgba(0,0,0,0.04);
   }
 
-  /* Dark theme variables */
-  .dark-theme{
-    --bg:#0f1113; --card:#141518; --accent:#6e5aa3; --muted:#9fa3ad; --text:#e6e7ea;
-    --good:#4caf50; --bad:#ef5350; --glass: rgba(255,255,255,0.03);
+  /* Variáveis do Modo Escuro */
+  .dark-theme {
+    --bg: #121217;       
+    --card: #1e1e26;     
+    --accent: #a78bfa;   
+    --muted: #a1a1aa;    
+    --text: #f8fafc;     
+    --good: #4ade80;     
+    --bad: #f87171;      
+    --glass: rgba(255, 255, 255, 0.05);
     color-scheme: dark;
   }
+
   *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial}
-  html,body{height:100%}
+  
+  html, body { min-height: 100%; height: auto; }
+  
   body{
     margin:0;background:var(--bg);color:var(--text);
-    display:flex;align-items:flex-start;justify-content:center;padding:18px;
+    display:flex;align-items:flex-start;justify-content:center;
+    padding:18px;
+    padding-top: 114px;  
+    min-height: 100vh;
   }
 
   .wrap{
     width:100%;max-width:520px;background:var(--card);
-    border-radius:14px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    border-radius:14px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,0.06);
     display:flex;flex-direction:column;gap:12px;
+    margin-bottom: 140px; 
   }
 
-  header{display:flex;flex-direction:column;gap:12px;position:sticky;top:0;left:0;right:0;z-index:80;padding-top:8px;padding-bottom:12px;background:var(--card);backdrop-filter:blur(6px);box-shadow:0 12px 30px rgba(0,0,0,0.10);border-radius:18px;margin-bottom:22px;margin-left:-18px;margin-right:-18px;padding-left:18px;padding-right:18px}
-  header{transition:padding 260ms ease, border-radius 260ms ease, box-shadow 260ms ease}
-  header.compact{padding-top:6px;padding-bottom:8px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-  .header-top{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;max-width:480px;margin:0 auto}
-  .header-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;max-width:480px;margin:0 auto}
-  h1{font-size:18px;margin:0}
-  .meta{display:flex;gap:10px;align-items:center}
-  .small{font-size:13px;color:var(--muted)}
-  .menu{position:relative}
-  .menu-button{background:var(--card);border:1px solid rgba(201,181,232,0.12);border-radius:999px;padding:8px 12px;color:var(--text);cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,0.06)}
-  .menu-button:hover{background:#fff}
-  .menu-panel{position:absolute;top:calc(100% + 8px);right:0;min-width:220px;background:var(--card);border:1px solid rgba(201,181,232,0.06);border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,0.06);padding:10px;display:none;flex-direction:column;gap:8px;z-index:50}
-  .menu.active .menu-panel{display:flex}
-  .menu-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(201,181,232,0.06);border:1px solid rgba(201,181,232,0.08);cursor:pointer;color:var(--text);font-size:14px;font-weight:700;text-align:left}
-  .menu-item:hover{background:rgba(201,181,232,0.12)}
-  .menu-item .icon{font-size:16px;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;background:transparent;border:none;padding:4px}
-  .dark-theme .menu-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04)}
-  .dark-theme .menu-item .icon{background:transparent}
+  /* Barra superior fixa */
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 80;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    transition: padding 260ms ease, border-radius 260ms ease, box-shadow 260ms ease;
+  }
+  header.compact {
+    padding-top: 8px;
+    padding-bottom: 10px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+  }
 
-  .lives{display:flex;gap:6px;align-items:center}
+  /* Novo layout do cabeçalho */
+  .header-title { width: 100%; text-align: center; }
+  h1 { font-size: 18px; margin: 0; }
+  
+  .header-controls { 
+    display: flex; align-items: center; justify-content: space-between; 
+    width: 100%; max-width: 480px; margin: 0 auto; 
+  }
+  
+  .lives-wrapper { flex: 1; display: flex; justify-content: flex-start; }
+  .score-wrapper { flex: 1; display: flex; justify-content: center; font-size: 13px; font-weight: 700; color: var(--muted); text-align: center; }
+  .menu-wrapper { flex: 1; display: flex; justify-content: flex-end; position: relative; }
+
+  .menu{position:relative}
+  .menu-button{background:var(--bg);border:1px solid #e2e8f0;border-radius:50%;width:38px;height:38px;padding:0;color:var(--text);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.04)}
+  .menu-button:hover{background:#f1f5f9}
+  .menu-button .icon { font-size: 18px; margin: 0; padding: 0; display: block; }
+  
+  .dark-theme .menu-button{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)}
+  .dark-theme .menu-button:hover{background:rgba(255,255,255,0.1)}
+  
+  .menu-panel{position:absolute;top:calc(100% + 8px);right:0;min-width:220px;background:var(--card);border:1px solid #e2e8f0;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,0.12);padding:10px;display:none;flex-direction:column;gap:8px;z-index:50}
+  .dark-theme .menu-panel{border-color:rgba(255,255,255,0.08);box-shadow:0 20px 40px rgba(0,0,0,0.5);}
+  .menu.active .menu-panel{display:flex}
+
+  .menu-item {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px;
+    background: #f8fafc; 
+    border: 1px solid #e2e8f0; 
+    cursor: pointer; color: var(--text); font-size: 14px; font-weight: 700; text-align: left;
+    transition: background 0.2s;
+  }
+  .menu-item:hover { background: #f1f5f9; }
+  .menu-item .icon { font-size: 16px; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 8px; background: transparent; border: none; padding: 4px; }
+  
+  .dark-theme .menu-item {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .dark-theme .menu-item:hover { background: rgba(255, 255, 255, 0.15); }
+
+  .lives{display:flex;gap:4px;align-items:center}
   .heart{display:inline-flex;align-items:center;justify-content:center;font-size:16px;min-width:18px;height:18px}
   .heart.empty{opacity:0.35}
 
   .play-area{display:flex;flex-direction:column;gap:12px;align-items:stretch}
+  
+  .game-subtitle { font-size: 15px; font-weight: 700; color: var(--muted); text-align: center; margin: 4px 0 0 0; }
+
   .center-area{display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px;background:transparent;border-radius:12px}
-  .candidate{
-    width:92%;max-width:420px;background:linear-gradient(180deg, rgba(252,220,230,0.6), rgba(250,210,225,0.5));
-    border-radius:12px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:8px;touch-action:none;
-    box-shadow:0 6px 18px rgba(235,170,190,0.2);
+  
+  .candidate {
+    width: 92%; max-width: 420px;
+    background: #f5f3ff; 
+    border: 1px solid #ede9fe;
+    border-radius: 12px; padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; touch-action: none;
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.12);
   }
-  .candidate .image{width:100%;height:160px;border-radius:8px;object-fit:cover;background:rgba(0,0,0,0.1);margin-bottom:4px}
+  .candidate .image{width:100%;height:160px;border-radius:8px;object-fit:cover;background:rgba(0,0,0,0.05);margin-bottom:4px}
   .candidate .title{font-size:12px;color:var(--muted)}
   .candidate .name{font-size:16px;font-weight:800;text-align:center;color:var(--text)}
-  .candidate .year{font-size:13px;color:var(--muted)}
+  .candidate .value{font-size:13px;color:var(--muted)}
   .candidate.dragging{opacity:0.85;transform:scale(0.98);box-shadow:0 12px 30px rgba(0,0,0,0.6)}
   .candidate-hint{font-size:13px;color:var(--muted);text-align:center}
 
-  .controls{display:flex;gap:10px;align-items:center;justify-content:center;width:100%}
-  button.primary{background:var(--accent);border:none;padding:12px 18px;border-radius:12px;color:#fff;font-weight:800;cursor:pointer;min-width:140px}
-  button.primary:disabled{opacity:0.5;cursor:default}
-  button.ghost{background:transparent;border:1px solid rgba(201,181,232,0.3);padding:10px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
+  .dark-theme .candidate {
+    background: linear-gradient(180deg, rgba(167, 139, 250, 0.12), rgba(167, 139, 250, 0.04));
+    border: 1px solid rgba(167, 139, 250, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
 
-  /* feedback area */
-  #feedback{min-height:22px;padding:8px 10px;border-radius:10px;background:rgba(201,181,232,0.06);color:var(--muted);text-align:center;font-size:13px}
+  #feedback{min-height:22px;padding:8px 10px;border-radius:10px;background:#f8fafc; border: 1px solid #f1f5f9; color:var(--muted);text-align:center;font-size:13px; width: 100%;}
+  .dark-theme #feedback { background: rgba(255,255,255,0.03); border-color: transparent; }
 
-  .list-area{background:linear-gradient(180deg, rgba(210,235,250,0.4), rgba(220,240,250,0.3));padding:10px;border-radius:12px;display:flex;flex-direction:column;gap:6px;min-height:220px;border:1px solid rgba(180,220,245,0.2)}
+  .list-area {
+    background: #f1f5f9; 
+    border: 1px solid #e2e8f0;
+    padding: 10px; border-radius: 12px; display: flex; flex-direction: column; gap: 6px; min-height: 220px;
+  }
+  
+  .dark-theme .list-area {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
   .list-title{font-size:13px;color:var(--muted);margin-bottom:6px}
   .list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}
-  .slot{background:var(--card);padding:8px;border-radius:10px;border:1px dashed rgba(201,181,232,0.04);display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .slot{background:var(--card);padding:8px;border-radius:10px;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .dark-theme .slot { border-color: rgba(255,255,255,0.06); }
   .slot .image{width:42px;height:42px;border-radius:6px;object-fit:cover;flex-shrink:0}
   .slot .name{font-weight:700}
   .slot .meta{font-size:12px;color:var(--muted)}
   .slot.preview .drag-handle{cursor:grab;font-size:20px;color:rgba(122,111,133,0.5);padding:4px}
   .slot.preview .drag-handle:active{cursor:grabbing;color:var(--muted)}
-  .slot.preview.dragging-reorder{opacity:0.6;background:rgba(201,181,232,0.15)}
+  .slot.preview.dragging-reorder{opacity:0.6;background:rgba(139, 92, 246, 0.1)}
   .slot.preview .image{width:60px;height:60px}
   .dropzone{height:auto;border-radius:10px;margin:0;display:flex;align-items:center;justify-content:center;padding:6px}
-  .dropzone.active{background:rgba(201,181,232,0.25);border:1px solid rgba(201,181,232,0.4)}
+  .dropzone.active{background:rgba(139, 92, 246, 0.1);border:1px solid rgba(139, 92, 246, 0.3)}
   .dropzone-button{width:100%;border:none;background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;padding:10px 12px;border-radius:10px;text-align:center}
-  .dropzone-button:hover{background:rgba(201,181,232,0.12)}
-  .preview{border-style:solid;border-color:rgba(201,181,232,0.06);background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01))}
+  .dropzone-button:hover{background:rgba(15, 23, 42, 0.05)}
+  .dark-theme .dropzone-button:hover{background:rgba(255, 255, 255, 0.05)}
+  .preview{border-style:solid;border-color:var(--accent);background:var(--card);}
 
-  .footer{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .footer{display:flex;justify-content:space-between;align-items:center;gap:8px; margin-top: 4px;}
   .result{font-weight:800}
+  .small{font-size:13px;color:var(--muted)}
 
-  /* Modal styles */
-  .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:10000;align-items:center;justify-content:center}
+  .fixed-bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 -12px 30px rgba(0,0,0,0.06);
+    padding: 16px 18px;
+    display: flex;
+    justify-content: center;
+    z-index: 80;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+  }
+
+  button.primary{background:var(--accent);border:none;padding:12px 18px;border-radius:12px;color:#fff;font-weight:800;cursor:pointer;min-width:140px;transition: filter 0.2s;}
+  button.primary:disabled{opacity:0.5;cursor:default;filter:none;}
+
+  button.primary:not(:disabled) {
+    filter: brightness(0.92); 
+  }
+  button.primary:not(:disabled):active {
+    filter: brightness(0.85); 
+  }
+
+  button.ghost{background:transparent;border:1px solid rgba(139, 92, 246, 0.3);padding:10px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
+
+  .fixed-bottom-bar .primary {
+    width: 100%;
+    max-width: 480px;
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15, 23, 42, 0.6);backdrop-filter:blur(3px);z-index:10000;align-items:center;justify-content:center}
   .modal.active{display:flex}
-  .modal-content{background:var(--card);border-radius:16px;padding:32px;max-width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.12);animation:slideUp 0.3s ease-out}
+  .modal-content{background:var(--card);border-radius:16px;padding:32px;max-width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);animation:slideUp 0.3s ease-out}
   .modal-emoji{font-size:64px;margin-bottom:16px}
   .modal-title{font-size:24px;font-weight:800;color:var(--text);margin-bottom:12px}
   .modal-message{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.5}
   .modal-button{background:var(--accent);border:none;padding:14px 28px;border-radius:12px;color:#fff;font-weight:800;cursor:pointer;font-size:16px;width:100%}
-  .modal-button:hover{opacity:0.9}
+  .modal-button:hover{filter:brightness(0.9)}
   
   @keyframes slideUp{
     from{transform:translateY(20px);opacity:0}
@@ -110,127 +233,120 @@
   }
 
   @media(min-width:720px){
-    body{padding:28px}
-    .wrap{padding:18px}
-    header{top:0;margin-left:-28px;margin-right:-28px;padding-left:28px;padding-right:28px}
+    body{
+      padding:28px;
+      padding-top: 130px; 
+    }
+    .wrap{
+      padding:18px;
+      margin-bottom: 150px; 
+    }
   }
 </style>
 </head>
 <body>
   <div class="wrap" role="application" aria-label="Who's something mobile game">
     <header>
-      <div class="header-top">
-        <h1>Who's something — Quem é o mais antigo</h1>
-        <div class="menu" id="appMenu">
-          <button type="button" class="menu-button" id="menuToggle" aria-expanded="false" aria-controls="menuPanel">
-            <span class="icon">☰</span>
-            Menu
-          </button>
-          <div class="menu-panel" id="menuPanel" role="menu">
-            <button type="button" class="menu-item" id="restartMenuBtn" role="menuitem"><span class="icon">🔄</span> Reiniciar jogo</button>
-            <button type="button" class="menu-item" id="howToPlayBtn" role="menuitem"><span class="icon">❓</span> Como jogar?</button>
-            <button type="button" class="menu-item" id="aboutBtn" role="menuitem"><span class="icon">ℹ️</span> Sobre</button>
-            <button type="button" class="menu-item" id="themeToggleBtn" role="menuitem"><span class="icon" id="themeIcon">🌙</span> Modo Escuro</button>
+      <div class="header-title">
+        <h1>Who's something</h1>
+      </div>
+      <div class="header-controls">
+        <div class="lives-wrapper">
+          <div class="lives" aria-live="polite">
+            <div id="livesContainer" style="display:flex;gap:4px;"></div>
           </div>
         </div>
-      </div>
-      <div class="header-meta">
-        <div class="lives" aria-live="polite">
-          <span class="small">Vidas</span>
-          <div id="livesContainer" style="display:flex;gap:6px;margin-left:8px"></div>
+        <div class="score-wrapper" id="score">
+          Colocados: 0 / 10
         </div>
-        <div class="small" id="score">Colocados: 0 / 10</div>
+        <div class="menu-wrapper">
+          <div class="menu" id="appMenu">
+            <button type="button" class="menu-button" id="menuToggle" aria-expanded="false" aria-controls="menuPanel" aria-label="Menu">
+              <span class="icon">☰</span>
+            </button>
+            <div class="menu-panel" id="menuPanel" role="menu">
+              <button type="button" class="menu-item" id="howToPlayBtn" role="menuitem"><span class="icon">❓</span> Como jogar?</button>
+              <button type="button" class="menu-item" id="aboutBtn" role="menuitem"><span class="icon">ℹ️</span> Sobre</button>
+              <button type="button" class="menu-item" id="themeToggleBtn" role="menuitem"><span class="icon" id="themeIcon">🌙</span> Modo Escuro</button>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
 
     <main class="play-area" id="playArea">
+      <h2 class="game-subtitle" id="gameSubtitle">Carregando tema...</h2>
+      
       <div class="center-area" aria-hidden="false">
         <div id="candidateCard" class="candidate" role="button" aria-label="Candidato atual" tabindex="0">
           <div class="title">Candidato</div>
           <img id="candidateImage" class="image" src="" alt="Imagem do candidato">
           <div id="candidateName" class="name">—</div>
-          <div id="candidateYear" class="year">—</div>
+          <div id="candidateValue" class="value">—</div>
           <div class="candidate-hint small">Clique em um botão abaixo para escolher a posição do item e depois confirme em Próximo.</div>
         </div>
 
-        <div class="controls" style="width:100%">
-          <button id="nextBtn" class="primary" disabled>Próximo</button>
-        </div>
-
-        <!-- NOVO: área dedicada para mensagens de feedback (não sobrescreve o cartão) -->
         <div id="feedback" aria-live="polite"></div>
       </div>
 
-      <section class="list-area" aria-label="Lista de monumentos">
-        <div class="list-title">Ordene do mais antigo (topo) ao mais novo (fundo)</div>
+      <section class="list-area" aria-label="Lista de itens">
+        <div class="list-title" id="listTitleDesc">Carregando instruções...</div>
         <ol id="placedList" class="list" aria-live="polite"></ol>
         <div class="small" style="margin-top:6px">Clique em um dos botões da lista para escolher a posição do candidato atual e então confirme em Próximo.</div>
       </section>
 
       <div class="footer">
-        <div class="small">Restantes: <span id="remaining">10</span></div>
+        <div class="small">Restantes: <span id="remaining">0</span></div>
         <div class="result" id="resultText"></div>
       </div>
     </main>
   </div>
 
-  <!-- Modal de Vitória -->
+  <div class="fixed-bottom-bar">
+    <button id="nextBtn" class="primary" disabled>Próximo</button>
+  </div>
+
   <div id="winModal" class="modal">
     <div class="modal-content">
       <div class="modal-emoji">🎉</div>
       <div class="modal-title">Parabéns!</div>
-      <div class="modal-message">Você completou a rodada. Sua pontuação reflete o número de acertos entre os 10 candidatos.</div>
+      <div class="modal-message">Você completou a rodada com sucesso. Volte na próxima edição para um novo desafio!</div>
       <div class="modal-score" id="winScore" style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:16px">Pontuação: 10/10</div>
-      <button class="modal-button" id="winPlayAgainBtn">Jogar Novamente</button>
+      <button class="modal-button" onclick="closeModal('winModal')">Ver Resultado</button>
     </div>
   </div>
 
-  <!-- Modal de Derrota -->
   <div id="lossModal" class="modal">
     <div class="modal-content">
       <div class="modal-emoji">😔</div>
       <div class="modal-title">Fim de Jogo</div>
-      <div class="modal-message">Você perdeu todas as vidas. Mas não desista! Você pode tentar novamente e acertar desta vez.</div>
-      <button class="modal-button" id="lossPlayAgainBtn">Tentar Novamente</button>
+      <div class="modal-message">Você perdeu todas as vidas. A sua única chance desta edição acabou, mas volte na próxima edição para tentar um novo tema!</div>
+      <button class="modal-button" onclick="closeModal('lossModal')">Ver Resultado</button>
     </div>
   </div>
 
-  <!-- Modal Como Jogar -->
   <div id="howToPlayModal" class="modal">
     <div class="modal-content">
       <div class="modal-emoji">🎮</div>
       <div class="modal-title">Como jogar</div>
-      <div class="modal-message">Escolha uma posição para o candidato atual clicando em um dos botões "+ clique para adicionar o item aqui" na lista. Depois pressione Próximo para confirmar sua escolha. Você perde uma vida se a ordem estiver incorreta. O jogo termina quando você perde todas as vidas ou quando não restarem candidatos.</div>
+      <div class="modal-message">Escolha uma posição para o candidato atual clicando em um dos botões "+ clique para adicionar o item aqui" na lista. Depois pressione Próximo para confirmar. Você perde uma vida se a ordem estiver incorreta. Importante: Você tem apenas uma chance por edição!</div>
       <button class="modal-button" id="howToPlayCloseBtn">Fechar</button>
     </div>
   </div>
 
-  <!-- Modal Sobre -->
   <div id="aboutModal" class="modal">
     <div class="modal-content">
       <div class="modal-emoji">👤</div>
       <div class="modal-title">Sobre</div>
-      <div class="modal-message">Desenvolvido de forma independente por Giovanni Silva. Este jogo é uma experiência leve de ordenação baseada em monumentos históricos.</div>
+      <div class="modal-message">Desenvolvido de forma independente por Giovanni Silva. Jogo de ordenação dinâmico inspirado em dinâmicas de chance única.</div>
       <button class="modal-button" id="aboutCloseBtn">Fechar</button>
     </div>
   </div>
 
 <script>
-/* Mobile drag-to-insert ordering game (corrigido: feedback separado do cartão) */
+/* Mobile drag-to-insert ordering game (Persistent Storage - One Try Mode) */
 
-const monuments = [
-  { id:1, name:"Grande Pirâmide de Gizé (Egito)", year:-2560, image:"assets/gize.jpg" },
-  { id:2, name:"Stonehenge (Reino Unido)", year:-2500, image:"assets/stonehenge.jpg" },
-  { id:3, name:"Partenon (Grécia)", year:-447, image:"assets/parthenon.jpg" },
-  { id:4, name:"Anfiteatro Flaviano / Coliseu (Itália)", year:80, image:"assets/coliseu.jpg" },
-  { id:5, name:"Angkor Wat (Camboja)", year:1150, image:"assets/angkor.jpg" },
-  { id:6, name:"Notre-Dame de Paris (França)", year:1163, image:"assets/notre_dame.jpg" },
-  { id:7, name:"Machu Picchu (Peru)", year:1450, image:"assets/Machu_Picchu.jpg" },
-  { id:8, name:"Taj Mahal (Índia)", year:1653, image:"assets/taj_mahal.webp" },
-  { id:9, name:"Estátua da Liberdade (EUA)", year:1886, image:"assets/estatua_liberdade.jpg" },
-  { id:10, name:"Torre Eiffel (França)", year:1889, image:"assets/eiffel.jpg" }
-];
-
+let gameTheme = null; 
 let remainingPool = [];
 let placed = [];
 let candidate = null;
@@ -239,53 +355,138 @@ let lives = 3;
 let gameOver = false;
 const maxLives = 3;
 
-/* DOM */
+/* DOM Elements */
 const candidateCard = document.getElementById('candidateCard');
 const candidateNameEl = document.getElementById('candidateName');
-const candidateYearEl = document.getElementById('candidateYear');
+const candidateValueEl = document.getElementById('candidateValue');
 const candidateImageEl = document.getElementById('candidateImage');
 const nextBtn = document.getElementById('nextBtn');
-// restart button removed from inline controls; use menu restart (restartMenuBtn)
 const placedListEl = document.getElementById('placedList');
 const livesContainer = document.getElementById('livesContainer');
 const scoreEl = document.getElementById('score');
 const remainingEl = document.getElementById('remaining');
 const resultText = document.getElementById('resultText');
-const feedbackEl = document.getElementById('feedback'); // NOVO: área de feedback
+const feedbackEl = document.getElementById('feedback');
 const appMenu = document.getElementById('appMenu');
 const menuToggle = document.getElementById('menuToggle');
-const restartMenuBtn = document.getElementById('restartMenuBtn');
 const howToPlayBtn = document.getElementById('howToPlayBtn');
 const aboutBtn = document.getElementById('aboutBtn');
 const howToPlayCloseBtn = document.getElementById('howToPlayCloseBtn');
 const aboutCloseBtn = document.getElementById('aboutCloseBtn');
 const themeToggleBtn = document.getElementById('themeToggleBtn');
 let themeIcon = document.getElementById('themeIcon');
+const gameSubtitle = document.getElementById('gameSubtitle');
+const listTitleDesc = document.getElementById('listTitleDesc');
 
-/* Drag variables */
-let dragging = false;
-let dragOffset = {x:0,y:0};
-let startRect = null;
-let ghost = null;
-let autoScrollInterval = null;
+let dragging = false, dragOffset = {x:0,y:0}, startRect = null, ghost = null, autoScrollInterval = null;
 
-/* Inicializa jogo */
-function initGame(){
-  remainingPool = shuffleArray([...monuments]);
+/* Nova Função: Salvar Progresso */
+function saveGameState() {
+  if (!gameTheme) return;
+  const state = {
+    titulo: gameTheme.titulo,
+    remainingPool: remainingPool,
+    placed: placed,
+    candidate: candidate,
+    lives: lives,
+    gameOver: gameOver
+  };
+  localStorage.setItem('whos_something_save', JSON.stringify(state));
+}
+
+/* Nova Função: Carregar JSON da Edição Atual */
+async function loadGameData() {
+  try {
+    gameSubtitle.textContent = "Carregando a edição da semana...";
+    listTitleDesc.textContent = "Aguarde...";
+
+    const response = await fetch('ed_atual/tema.json');
+    if (!response.ok) throw new Error("Arquivo da edição atual não encontrado.");
+
+    gameTheme = await response.json();
+    gameSubtitle.textContent = gameTheme.titulo;
+    listTitleDesc.textContent = gameTheme.instrucao;
+    
+    // Cria IDs internos para os itens
+    gameTheme.itens = gameTheme.itens.map((item, index) => ({...item, id: index + 1}));
+    
+    // Inicia ou Restaura o Jogo
+    initOrRestoreGame();
+
+  } catch (error) {
+    console.error(error);
+    gameSubtitle.textContent = "Erro ao carregar a edição atual";
+    listTitleDesc.textContent = "Certifique-se de que o arquivo 'tema.json' está na pasta 'ed_atual'.";
+  }
+}
+
+/* Inicializa jogo Novo ou Restaura do LocalStorage */
+function initOrRestoreGame(){
+  if (!gameTheme) return; 
+  
+  const savedStr = localStorage.getItem('whos_something_save');
+  
+  if (savedStr) {
+    try {
+      const savedState = JSON.parse(savedStr);
+      // Se o título salvo for IGUAL ao tema atual, o usuário está continuando a mesma edição
+      if (savedState.titulo === gameTheme.titulo) {
+        remainingPool = savedState.remainingPool;
+        placed = savedState.placed;
+        candidate = savedState.candidate;
+        lives = savedState.lives;
+        gameOver = savedState.gameOver;
+        selectedInsertIndex = null;
+
+        updateLivesUI();
+        updateScore();
+        renderPlacedList();
+        
+        if (candidate && !gameOver) {
+          candidateNameEl.textContent = candidate.nome;
+          candidateValueEl.textContent = '?';
+          candidateImageEl.src = candidate.imagem;
+          remainingEl.textContent = remainingPool.length;
+          nextBtn.disabled = true;
+        } else {
+          candidateNameEl.textContent = '—';
+          candidateValueEl.textContent = '—';
+          candidateImageEl.src = '';
+          remainingEl.textContent = 0;
+          nextBtn.disabled = true;
+        }
+
+        if (gameOver) {
+          showResult(lives > 0);
+        }
+        return; // Sai da função, jogo restaurado com sucesso!
+      }
+    } catch(e) {
+      console.error("Erro ao ler save game", e);
+    }
+  }
+
+  // Se chegou aqui, não tem save compatível. Inicia um jogo fresco.
+  remainingPool = shuffleArray([...gameTheme.itens]);
   placed = [];
   lives = maxLives;
   candidate = null;
   selectedInsertIndex = null;
   gameOver = false;
+  
   resultText.textContent = '';
   feedbackEl.textContent = '';
-  updateLivesUI();
-  updateScore();
-  // coloca um item inicial
+  
   const first = remainingPool.shift();
   placed.push(first);
   pickNextCandidate();
+  
+  updateLivesUI();
+  updateScore();
   renderPlacedList();
+
+  // Salva o primeiro estado gerado imediatamente para fixar a ordem embaralhada
+  saveGameState(); 
 }
 
 /* Embaralha */
@@ -303,21 +504,17 @@ function pickNextCandidate(){
   if(remainingPool.length === 0){
     candidate = null;
     candidateNameEl.textContent = '—';
-    candidateYearEl.textContent = '—';
+    candidateValueEl.textContent = '—';
     candidateImageEl.src = '';
     remainingEl.textContent = 0;
     nextBtn.disabled = true;
-    if(lives > 0){
-      showResult(true);
-    } else {
-      showResult(false);
-    }
+    showResult(lives > 0);
     return;
   }
   candidate = remainingPool.shift();
-  candidateNameEl.textContent = candidate.name;
-  candidateYearEl.textContent = '?';
-  candidateImageEl.src = candidate.image;
+  candidateNameEl.textContent = candidate.nome;
+  candidateValueEl.textContent = '?';
+  candidateImageEl.src = candidate.imagem;
   remainingEl.textContent = remainingPool.length;
   selectedInsertIndex = null;
   nextBtn.disabled = true;
@@ -332,11 +529,12 @@ function renderPlacedList(){
     const li = document.createElement('li');
     li.className = 'slot';
     li.setAttribute('data-id', item.id);
-    li.innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex:1"><img src="${item.image}" alt="${escapeHtml(item.name)}" class="image" loading="lazy" decoding="async"><div><div class="name">${escapeHtml(item.name)}</div><div class="meta">${formatYear(item.year)}</div></div></div><div class="meta">#${idx+1}</div>`;
+    li.innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex:1"><img src="${item.imagem}" alt="${escapeHtml(item.nome)}" class="image" loading="lazy" decoding="async"><div><div class="name">${escapeHtml(item.nome)}</div><div class="meta">${escapeHtml(item.textoExibicao)}</div></div></div><div class="meta">#${idx+1}</div>`;
     placedListEl.appendChild(li);
     placedListEl.appendChild(createDropZone(idx+1));
   });
-  if(selectedInsertIndex !== null){
+  
+  if(selectedInsertIndex !== null && candidate && !gameOver){
     const dropzones = placedListEl.querySelectorAll('.dropzone');
     dropzones.forEach(dz => dz.classList.remove('active'));
     const targetDz = dropzones[selectedInsertIndex];
@@ -344,7 +542,7 @@ function renderPlacedList(){
       targetDz.classList.add('active');
       const preview = document.createElement('li');
       preview.className = 'slot preview';
-      preview.innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex:1"><img src="${candidate ? candidate.image : ''}" alt="candidato" class="image" loading="lazy" decoding="async"><div><div class="name">${escapeHtml(candidate ? candidate.name : '—')}</div><div class="meta">${candidate ? '?' : ''}</div></div></div><div class="meta">candidato</div>`;
+      preview.innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex:1"><img src="${candidate.imagem}" alt="candidato" class="image" loading="lazy" decoding="async"><div><div class="name">${escapeHtml(candidate.nome)}</div><div class="meta">?</div></div></div><div class="meta">candidato</div>`;
       if(targetDz.nextSibling){
         placedListEl.insertBefore(preview, targetDz.nextSibling);
       } else {
@@ -359,46 +557,52 @@ function createDropZone(index){
   const li = document.createElement('li');
   li.className = 'dropzone';
   li.setAttribute('data-index', index);
-  li.innerHTML = `<button type="button" class="dropzone-button" aria-label="Adicionar item na posição ${index+1}">+ clique para adicionar o item aqui</button>`;
-  const button = li.querySelector('.dropzone-button');
-  button.addEventListener('click', (event) => {
-    event.stopPropagation();
-    if(!candidate) return;
-    selectedInsertIndex = index;
-    nextBtn.disabled = false;
-    renderPlacedList();
-    setFeedback(`Candidato será inserido na posição ${index+1}.`);
-  });
+  if(gameOver) {
+    li.style.display = 'none'; // Esconde os botões de drop se o jogo acabou
+  } else {
+    li.innerHTML = `<button type="button" class="dropzone-button" aria-label="Adicionar item na posição ${index+1}">+ clique para adicionar o item aqui</button>`;
+    const button = li.querySelector('.dropzone-button');
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if(!candidate) return;
+      selectedInsertIndex = index;
+      nextBtn.disabled = false;
+      renderPlacedList();
+      setFeedback(`Candidato será inserido na posição ${index+1}.`);
+    });
+  }
   return li;
 }
 
-/* Formata ano */
-function formatYear(y){
-  if(y < 0) return `${Math.abs(y)} a.C.`;
-  return `${y} d.C.`;
-}
-
-/* Verifica ordenação */
-function isSortedByYearAsc(arr){
-  for(let i=1;i<arr.length;i++){
-    if(arr[i].year < arr[i-1].year) return false;
+/* Verifica ordenação dinamicamente baseado no JSON */
+function isSortedCorrectly(arr){
+  const isAsc = gameTheme.ordem === 'asc';
+  for(let i = 1; i < arr.length; i++){
+    if(isAsc){
+      if(arr[i].valor < arr[i-1].valor) return false;
+    } else {
+      if(arr[i].valor > arr[i-1].valor) return false;
+    }
   }
   return true;
 }
 
 /* Próximo */
 nextBtn.addEventListener('click', () => {
-  if(selectedInsertIndex === null || !candidate) return;
+  if(selectedInsertIndex === null || !candidate || gameOver) return;
   const temp = [...placed];
   temp.splice(selectedInsertIndex, 0, candidate);
-  if(isSortedByYearAsc(temp)){
+  
+  if(isSortedCorrectly(temp)){
     placed = temp;
     updateScore();
     setFeedback('Correto! Mais um item adicionado.', 1400);
-    if(placed.length === monuments.length){
+    if(placed.length === gameTheme.itens.length){
+      gameOver = true;
+      saveGameState();
       candidate = null;
       candidateNameEl.textContent = '—';
-      candidateYearEl.textContent = '—';
+      candidateValueEl.textContent = '—';
       remainingEl.textContent = 0;
       nextBtn.disabled = true;
       renderPlacedList();
@@ -406,28 +610,34 @@ nextBtn.addEventListener('click', () => {
       return;
     }
     pickNextCandidate();
+    saveGameState(); // Salva o novo candidato na tela
     renderPlacedList();
   } else {
     lives--;
     updateLivesUI();
     setFeedback('Errado! Você perdeu uma vida.', 1400);
     if(lives <= 0){
+      gameOver = true;
+      saveGameState();
       showResult(false);
       return;
     }
     candidate = null;
     candidateNameEl.textContent = '—';
-    candidateYearEl.textContent = '—';
+    candidateValueEl.textContent = '—';
     remainingEl.textContent = remainingPool.length;
     nextBtn.disabled = true;
+    
+    // Salva estado vazio enquanto aguarda o próximo, evitando recarregar para recuperar a vida
+    saveGameState(); 
+
     setTimeout(() => {
       pickNextCandidate();
+      saveGameState();
       renderPlacedList();
     }, 700);
   }
 });
-
-/* Reiniciar inline removed; menu restart is handled by restartMenuBtn listener */
 
 /* Atualiza vidas */
 function updateLivesUI(){
@@ -442,7 +652,8 @@ function updateLivesUI(){
 
 /* Atualiza score */
 function updateScore(){
-  scoreEl.textContent = `Colocados: ${placed.length} / ${monuments.length}`;
+  if(!gameTheme) return;
+  scoreEl.textContent = `Colocados: ${placed.length} / ${gameTheme.itens.length}`;
 }
 
 /* Mostrar resultado final */
@@ -451,13 +662,13 @@ function showResult(won){
   nextBtn.disabled = true;
   candidate = null;
   candidateNameEl.textContent = '—';
-  candidateYearEl.textContent = '—';
+  candidateValueEl.textContent = '—';
   candidateImageEl.src = '';
   renderPlacedList();
   if(won){
-    resultText.textContent = placed.length === monuments.length ? 'Você venceu!' : 'Jogo concluído';
+    resultText.textContent = placed.length === gameTheme.itens.length ? 'Você venceu!' : 'Jogo concluído';
     const score = placed.length;
-    const total = monuments.length;
+    const total = gameTheme.itens.length;
     document.getElementById('winScore').textContent = `Pontuação: ${score}/${total}`;
     openModal('winModal');
   } else {
@@ -477,7 +688,7 @@ function closeModal(modalId){
   if(modal) modal.classList.remove('active');
 }
 
-/* NOVO: função para mostrar mensagens no elemento de feedback (não altera o cartão) */
+/* Mensagens no elemento de feedback */
 let feedbackTimeout = null;
 function setFeedback(text, ms = 1400){
   if(feedbackTimeout) clearTimeout(feedbackTimeout);
@@ -495,278 +706,14 @@ function escapeHtml(str){
   return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
-/* Drag & drop helpers */
-function getDropzoneUnderPoint(x,y){
-  const el = document.elementFromPoint(x,y);
-  if(!el) return null;
-  let node = el;
-  while(node && node !== document.body){
-    if(node.classList && node.classList.contains('dropzone')) return node;
-    node = node.parentElement;
-  }
-  return null;
-}
-
-function createGhost(){
-  if(!candidate) return null;
-  const g = candidateCard.cloneNode(true);
-  g.style.position = 'fixed';
-  g.style.left = (startRect.left) + 'px';
-  g.style.top = (startRect.top) + 'px';
-  g.style.width = startRect.width + 'px';
-  g.style.zIndex = 9999;
-  g.style.pointerEvents = 'none';
-  g.classList.add('dragging');
-  document.body.appendChild(g);
-  return g;
-}
-
-function startDrag(clientX, clientY){
-  if(gameOver || !candidate) return;
-  dragging = true;
-  startRect = candidateCard.getBoundingClientRect();
-  dragOffset.x = clientX - startRect.left;
-  dragOffset.y = clientY - startRect.top;
-  ghost = createGhost();
-  candidateCard.classList.add('dragging');
-  document.body.style.userSelect = 'none';
-}
-
-function moveDrag(clientX, clientY){
-  if(!dragging || !ghost) return;
-  const left = clientX - dragOffset.x;
-  const top = clientY - dragOffset.y;
-  ghost.style.left = left + 'px';
-  ghost.style.top = top + 'px';
-  
-  // Auto-scroll
-  const viewportHeight = window.innerHeight;
-  const scrollThreshold = 80;
-  let scrollSpeed = 0;
-  
-  if(clientY > viewportHeight - scrollThreshold){
-    scrollSpeed = Math.min(24, (clientY - (viewportHeight - scrollThreshold)) / 4);
-  } else if(clientY < scrollThreshold){
-    scrollSpeed = -Math.min(24, (scrollThreshold - clientY) / 4);
-  }
-  
-  if(scrollSpeed !== 0){
-    if(!autoScrollInterval){
-      autoScrollInterval = setInterval(() => {
-        window.scrollBy(0, scrollSpeed);
-      }, 16);
-    }
-  } else {
-    if(autoScrollInterval){
-      clearInterval(autoScrollInterval);
-      autoScrollInterval = null;
-    }
-  }
-  
-  const dz = getDropzoneUnderPoint(clientX, clientY);
-  const allDz = placedListEl.querySelectorAll('.dropzone');
-  allDz.forEach(d => d.classList.remove('active'));
-  selectedInsertIndex = null;
-  if(dz){
-    dz.classList.add('active');
-    selectedInsertIndex = parseInt(dz.getAttribute('data-index'), 10);
-    nextBtn.disabled = false;
-    renderPlacedList();
-    setFeedback(`Solte para inserir na posição ${selectedInsertIndex+1}.`, 800);
-  } else {
-    renderPlacedList();
-    nextBtn.disabled = true;
-  }
-}
-
-function endDrag(clientX, clientY){
-  if(!dragging) return;
-  dragging = false;
-  
-  // Para o auto-scroll
-  if(autoScrollInterval){
-    clearInterval(autoScrollInterval);
-    autoScrollInterval = null;
-  }
-  
-  candidateCard.classList.remove('dragging');
-  if(ghost && ghost.parentElement) ghost.parentElement.removeChild(ghost);
-  ghost = null;
-  document.body.style.userSelect = '';
-  const dz = getDropzoneUnderPoint(clientX, clientY);
-  if(dz){
-    selectedInsertIndex = parseInt(dz.getAttribute('data-index'), 10);
-    nextBtn.disabled = false;
-    renderPlacedList();
-    setFeedback(`Candidato pronto para inserir na posição ${selectedInsertIndex+1}.`, 1200);
-  } else {
-    selectedInsertIndex = null;
-    nextBtn.disabled = true;
-    renderPlacedList();
-    setFeedback('', 0);
-  }
-}
-
-/* Setup reordenação de itens da lista */
-let reorderDragging = false;
-let reorderStartIndex = null;
-let reorderGhost = null;
-
-function setupListReordering(){
-  // Apenas o preview (candidato) pode ser reordenado
-  const preview = placedListEl.querySelector('.preview');
-  if(!preview) return;
-  
-  const handle = preview.querySelector('.drag-handle');
-  if(!handle) return;
-  
-  handle.addEventListener('mousedown', (e) => {
-    e.preventDefault();
-    startListReorder(preview, e.clientX, e.clientY);
-    const onMove = (ev) => { moveListReorder(ev.clientX, ev.clientY); };
-    const onUp = (ev) => {
-      endListReorder(ev.clientX, ev.clientY);
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseup', onUp);
-    };
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
-  });
-  
-  handle.addEventListener('touchstart', (e) => {
-    if(e.touches.length !== 1) return;
-    const t = e.touches[0];
-    startListReorder(preview, t.clientX, t.clientY);
-  }, {passive:false});
-}
-
-function startListReorder(item, clientX, clientY){
-  reorderDragging = true;
-  reorderStartIndex = selectedInsertIndex;
-  const rect = item.getBoundingClientRect();
-  reorderGhost = item.cloneNode(true);
-  reorderGhost.style.position = 'fixed';
-  reorderGhost.style.left = rect.left + 'px';
-  reorderGhost.style.top = rect.top + 'px';
-  reorderGhost.style.width = rect.width + 'px';
-  reorderGhost.style.zIndex = 9999;
-  reorderGhost.style.pointerEvents = 'none';
-  reorderGhost.classList.add('dragging-reorder');
-  document.body.appendChild(reorderGhost);
-  item.classList.add('dragging-reorder');
-  document.body.style.userSelect = 'none';
-  dragOffset.x = clientX - rect.left;
-  dragOffset.y = clientY - rect.top;
-}
-
-function moveListReorder(clientX, clientY){
-  if(!reorderDragging || !reorderGhost) return;
-  const left = clientX - dragOffset.x;
-  const top = clientY - dragOffset.y;
-  reorderGhost.style.left = left + 'px';
-  reorderGhost.style.top = top + 'px';
-  
-  // Detecta qual dropzone está sob o mouse
-  const dropzones = placedListEl.querySelectorAll('.dropzone');
-  let hoveredIndex = null;
-  let closestDist = Infinity;
-  
-  dropzones.forEach((dz, idx) => {
-    const rect = dz.getBoundingClientRect();
-    const dist = Math.abs((rect.top + rect.bottom) / 2 - clientY);
-    if(dist < closestDist && clientY >= rect.top - 20 && clientY <= rect.bottom + 20){
-      closestDist = dist;
-      hoveredIndex = idx;
-    }
-  });
-  
-  if(hoveredIndex !== null && hoveredIndex !== selectedInsertIndex){
-    selectedInsertIndex = hoveredIndex;
-    nextBtn.disabled = false;
-    renderPlacedList();
-  }
-}
-
-function endListReorder(clientX, clientY){
-  if(!reorderDragging) return;
-  reorderDragging = false;
-  const preview = placedListEl.querySelector('.preview');
-  if(preview) preview.classList.remove('dragging-reorder');
-  if(reorderGhost && reorderGhost.parentElement) reorderGhost.parentElement.removeChild(reorderGhost);
-  reorderGhost = null;
-  document.body.style.userSelect = '';
-  
-  if(selectedInsertIndex !== reorderStartIndex){
-    renderPlacedList();
-    setFeedback(`Candidato será inserido na posição ${selectedInsertIndex+1}.`, 1000);
-  }
-}
-
-window.addEventListener('touchmove', (ev) => {
-  if(!reorderDragging) return;
-  const t = ev.touches[0];
-  moveListReorder(t.clientX, t.clientY);
-  ev.preventDefault();
-}, {passive:false});
-
-window.addEventListener('touchend', (ev) => {
-  if(!reorderDragging) return;
-  const t = (ev.changedTouches && ev.changedTouches[0]) || {};
-  endListReorder(t.clientX || 0, t.clientY || 0);
-}, {passive:false});
-
-/* Dragging disabled: positions are chosen by clicking the buttons between itens */
-
-/* Keyboard accessibility */
-candidateCard.addEventListener('keydown', (ev) => {
-  if(!candidate) return;
-  const key = ev.key;
-  if(key === 'ArrowDown' || key === 'ArrowUp'){
-    ev.preventDefault();
-    if(selectedInsertIndex === null) selectedInsertIndex = 0;
-    else {
-      if(key === 'ArrowDown') selectedInsertIndex = Math.min(selectedInsertIndex + 1, placed.length);
-      else selectedInsertIndex = Math.max(selectedInsertIndex - 1, 0);
-    }
-    nextBtn.disabled = false;
-    renderPlacedList();
-    setFeedback(`Posição selecionada: ${selectedInsertIndex+1}`, 900);
-  } else if(key === 'Enter'){
-    nextBtn.click();
-  }
-});
-
-/* Check win */
-function checkWin(){
-  if(placed.length === monuments.length && lives > 0){
-    showResult(true);
-  }
-}
-
-/* Inicializa */
-initGame();
+/* Dispara o carregamento dos dados quando a página abre */
+loadGameData();
 initTheme();
 
-/* Event listeners dos modais */
-document.getElementById('winPlayAgainBtn').addEventListener('click', () => {
-  closeModal('winModal');
-  initGame();
-});
-
-document.getElementById('lossPlayAgainBtn').addEventListener('click', () => {
-  closeModal('lossModal');
-  initGame();
-});
-
+/* Event listeners dos modais e menu */
 menuToggle.addEventListener('click', () => {
   const expanded = appMenu.classList.toggle('active');
   menuToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-});
-
-restartMenuBtn.addEventListener('click', () => {
-  appMenu.classList.remove('active');
-  menuToggle.setAttribute('aria-expanded', 'false');
-  initGame();
 });
 
 howToPlayBtn.addEventListener('click', () => {
@@ -838,7 +785,6 @@ if(themeToggleBtn){
     });
   }
   window.addEventListener('scroll', onScroll, {passive:true});
-  // run once to set initial state
   onScroll();
 })();
 

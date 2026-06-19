@@ -1,0 +1,11 @@
+{
+  "titulo": "Quem é o mais antigo v2",
+  "instrucao": "Ordene do mais antigo (topo) ao mais novo (fundo)",
+  "ordem": "asc",
+  "itens": [
+    { "nome": "Grande Pirâmide de Gizé (Egito)", "valor": -2560, "textoExibicao": "2560 a.C.", "imagem": "assets/gize.jpg" },
+    { "nome": "Coliseu (Itália)", "valor": 80, "textoExibicao": "80 d.C.", "imagem": "assets/coliseu.jpg" },
+    { "nome": "Taj Mahal (Índia)", "valor": 1653, "textoExibicao": "1653 d.C.", "imagem": "assets/taj_mahal.webp" },
+    { "nome": "Torre Eiffel (França)", "valor": 1889, "textoExibicao": "1889 d.C.", "imagem": "assets/eiffel.jpg" }
+  ]
+}

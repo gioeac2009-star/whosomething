@@ -1,0 +1,67 @@
+{
+  "titulo": "Quem é o mais antigo??",
+  "instrucao": "Ordene do mais antigo (topo) ao mais novo (fundo)",
+  "ordem": "asc",
+  "itens": [
+    {
+      "nome": "Grande Pirâmide de Gizé (Egito)",
+      "valor": -2560,
+      "textoExibicao": "2560 a.C.",
+      "imagem": "assets/gize.jpg"
+    },
+    {
+      "nome": "Stonehenge (Reino Unido)",
+      "valor": -2500,
+      "textoExibicao": "2500 a.C.",
+      "imagem": "assets/stonehenge.jpg"
+    },
+    {
+      "nome": "Partenon (Grécia)",
+      "valor": -447,
+      "textoExibicao": "447 a.C.",
+      "imagem": "assets/parthenon.jpg"
+    },
+    {
+      "nome": "Anfiteatro Flaviano / Coliseu (Itália)",
+      "valor": 80,
+      "textoExibicao": "80 d.C.",
+      "imagem": "assets/coliseu.jpg"
+    },
+    {
+      "nome": "Angkor Wat (Camboja)",
+      "valor": 1150,
+      "textoExibicao": "1150 d.C.",
+      "imagem": "assets/angkor.jpg"
+    },
+    {
+      "nome": "Notre-Dame de Paris (França)",
+      "valor": 1163,
+      "textoExibicao": "1163 d.C.",
+      "imagem": "assets/notre_dame.jpg"
+    },
+    {
+      "nome": "Machu Picchu (Peru)",
+      "valor": 1450,
+      "textoExibicao": "1450 d.C.",
+      "imagem": "assets/Machu_Picchu.jpg"
+    },
+    {
+      "nome": "Taj Mahal (Índia)",
+      "valor": 1653,
+      "textoExibicao": "1653 d.C.",
+      "imagem": "assets/taj_mahal.webp"
+    },
+    {
+      "nome": "Estátua da Liberdade (EUA)",
+      "valor": 1886,
+      "textoExibicao": "1886 d.C.",
+      "imagem": "assets/estatua_liberdade.jpg"
+    },
+    {
+      "nome": "Torre Eiffel (França)",
+      "valor": 1889,
+      "textoExibicao": "1889 d.C.",
+      "imagem": "assets/eiffel.jpg"
+    }
+  ]
+}
