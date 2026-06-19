@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Who's something</title>
+<title>Who's something — O Jogo de Ordenação</title>
 <style>
   /* Variáveis do Modo Claro (Refinadas e Coerentes) */
   :root {
@@ -220,12 +220,26 @@
 
   .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15, 23, 42, 0.6);backdrop-filter:blur(3px);z-index:10000;align-items:center;justify-content:center}
   .modal.active{display:flex}
-  .modal-content{background:var(--card);border-radius:16px;padding:32px;max-width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);animation:slideUp 0.3s ease-out}
+  .modal-content{background:var(--card);border-radius:16px;padding:32px;max-width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);animation:slideUp 0.3s ease-out; width: 90%;}
   .modal-emoji{font-size:64px;margin-bottom:16px}
   .modal-title{font-size:24px;font-weight:800;color:var(--text);margin-bottom:12px}
   .modal-message{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.5}
+  
   .modal-button{background:var(--accent);border:none;padding:14px 28px;border-radius:12px;color:#fff;font-weight:800;cursor:pointer;font-size:16px;width:100%}
   .modal-button:hover{filter:brightness(0.9)}
+  
+  /* Novo botão fantasma (secundário) para os modais */
+  .modal-button.ghost {
+    background: transparent;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    color: var(--text);
+  }
+  .modal-button.ghost:hover {
+    background: rgba(139, 92, 246, 0.05);
+  }
+  .dark-theme .modal-button.ghost:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
   
   @keyframes slideUp{
     from{transform:translateY(20px);opacity:0}
@@ -312,7 +326,11 @@
       <div class="modal-title">Parabéns!</div>
       <div class="modal-message">Você completou a rodada com sucesso. Volte na próxima edição para um novo desafio!</div>
       <div class="modal-score" id="winScore" style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:16px">Pontuação: 10/10</div>
-      <button class="modal-button" onclick="closeModal('winModal')">Ver Resultado</button>
+      
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <button class="modal-button" onclick="shareResult(this)">Compartilhar Resultado</button>
+        <button class="modal-button ghost" onclick="closeModal('winModal')">Ver Resultado</button>
+      </div>
     </div>
   </div>
 
@@ -320,8 +338,12 @@
     <div class="modal-content">
       <div class="modal-emoji">😔</div>
       <div class="modal-title">Fim de Jogo</div>
-      <div class="modal-message">Você perdeu todas as vidas. A sua única chance desta edição acabou, mas volte na próxima edição para tentar um novo tema!</div>
-      <button class="modal-button" onclick="closeModal('lossModal')">Ver Resultado</button>
+      <div class="modal-message">A sua única chance desta edição acabou, mas volte na próxima edição para tentar um novo tema!</div>
+      
+      <div style="display:flex; flex-direction:column; gap:8px; margin-top: 16px;">
+        <button class="modal-button" onclick="shareResult(this)">Compartilhar Resultado</button>
+        <button class="modal-button ghost" onclick="closeModal('lossModal')">Ver Resultado</button>
+      </div>
     </div>
   </div>
 
@@ -378,9 +400,65 @@ let themeIcon = document.getElementById('themeIcon');
 const gameSubtitle = document.getElementById('gameSubtitle');
 const listTitleDesc = document.getElementById('listTitleDesc');
 
-let dragging = false, dragOffset = {x:0,y:0}, startRect = null, ghost = null, autoScrollInterval = null;
+/* Nova Função: Gerar texto e Compartilhar via Clipboard */
+function shareResult(btnElement) {
+  if(!gameTheme) return;
+  
+  const score = placed.length;
+  const total = gameTheme.itens.length;
+  
+  // Constrói a linha visual das vidas
+  let hearts = '';
+  for(let i=0; i < maxLives; i++) {
+    hearts += (i < lives) ? '❤️' : '🖤';
+  }
+  
+  // Pega a URL atual, removendo qualquer parâmetro extra para ficar limpo
+  const url = window.location.href.split('?')[0]; 
+  
+  const text = `Who's something — ${gameTheme.titulo}\nPontuação: ${score}/${total}\nVidas: ${hearts}\n\nJogue em: ${url}`;
+  
+  // Tenta copiar para a área de transferência do celular/PC
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => {
+      showCopiedFeedback(btnElement);
+    }).catch(err => {
+      fallbackCopyTextToClipboard(text, btnElement);
+    });
+  } else {
+    fallbackCopyTextToClipboard(text, btnElement);
+  }
+}
 
-/* Nova Função: Salvar Progresso */
+/* Feedback visual de "Copiado" direto no botão */
+function showCopiedFeedback(btnElement) {
+  const originalText = btnElement.innerHTML;
+  btnElement.innerHTML = 'Copiado! 📋';
+  setTimeout(() => { 
+    btnElement.innerHTML = originalText; 
+  }, 2000);
+}
+
+/* Método alternativo para navegadores mais antigos/incompatíveis */
+function fallbackCopyTextToClipboard(text, btnElement) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  textArea.style.position = "fixed";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    const successful = document.execCommand('copy');
+    if(successful) showCopiedFeedback(btnElement);
+  } catch (err) {
+    console.error('Falha ao copiar', err);
+  }
+  document.body.removeChild(textArea);
+}
+
+/* Função: Salvar Progresso */
 function saveGameState() {
   if (!gameTheme) return;
   const state = {
@@ -394,7 +472,7 @@ function saveGameState() {
   localStorage.setItem('whos_something_save', JSON.stringify(state));
 }
 
-/* Nova Função: Carregar JSON da Edição Atual */
+/* Função: Carregar JSON da Edição Atual */
 async function loadGameData() {
   try {
     gameSubtitle.textContent = "Carregando a edição da semana...";
@@ -424,6 +502,8 @@ async function loadGameData() {
 function initOrRestoreGame(){
   if (!gameTheme) return; 
   
+  candidateCard.style.display = 'flex'; // Garante que a carta estará visível se o jogo não tiver acabado
+  
   const savedStr = localStorage.getItem('whos_something_save');
   
   if (savedStr) {
@@ -443,12 +523,14 @@ function initOrRestoreGame(){
         renderPlacedList();
         
         if (candidate && !gameOver) {
+          candidateCard.style.display = 'flex';
           candidateNameEl.textContent = candidate.nome;
           candidateValueEl.textContent = '?';
           candidateImageEl.src = candidate.imagem;
           remainingEl.textContent = remainingPool.length;
           nextBtn.disabled = true;
         } else {
+          candidateCard.style.display = 'none'; // Oculta a carta se o jogo já acabou ou não há candidato
           candidateNameEl.textContent = '—';
           candidateValueEl.textContent = '—';
           candidateImageEl.src = '';
@@ -503,6 +585,7 @@ function pickNextCandidate(){
   if(gameOver) return;
   if(remainingPool.length === 0){
     candidate = null;
+    candidateCard.style.display = 'none'; // Oculta a carta pois não há mais candidatos
     candidateNameEl.textContent = '—';
     candidateValueEl.textContent = '—';
     candidateImageEl.src = '';
@@ -511,6 +594,7 @@ function pickNextCandidate(){
     showResult(lives > 0);
     return;
   }
+  candidateCard.style.display = 'flex'; // Garante que a carta estará visível
   candidate = remainingPool.shift();
   candidateNameEl.textContent = candidate.nome;
   candidateValueEl.textContent = '?';
@@ -601,6 +685,7 @@ nextBtn.addEventListener('click', () => {
       gameOver = true;
       saveGameState();
       candidate = null;
+      candidateCard.style.display = 'none'; // Oculta a carta ao terminar com sucesso
       candidateNameEl.textContent = '—';
       candidateValueEl.textContent = '—';
       remainingEl.textContent = 0;
@@ -661,9 +746,7 @@ function showResult(won){
   gameOver = true;
   nextBtn.disabled = true;
   candidate = null;
-  candidateNameEl.textContent = '—';
-  candidateValueEl.textContent = '—';
-  candidateImageEl.src = '';
+  candidateCard.style.display = 'none'; // Oculta a área do candidato definitivamente ao fim do jogo
   renderPlacedList();
   if(won){
     resultText.textContent = placed.length === gameTheme.itens.length ? 'Você venceu!' : 'Jogo concluído';
