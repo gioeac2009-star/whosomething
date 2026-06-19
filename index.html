@@ -29,9 +29,11 @@
     display:flex;flex-direction:column;gap:12px;
   }
 
-  header{display:flex;flex-direction:column;gap:8px}
-  .header-top{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%}
-  .header-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%}
+  header{display:flex;flex-direction:column;gap:12px;position:sticky;top:0;left:0;right:0;z-index:80;padding-top:8px;padding-bottom:12px;background:var(--card);backdrop-filter:blur(6px);box-shadow:0 12px 30px rgba(0,0,0,0.10);border-radius:18px;margin-bottom:22px;margin-left:-18px;margin-right:-18px;padding-left:18px;padding-right:18px}
+  header{transition:padding 260ms ease, border-radius 260ms ease, box-shadow 260ms ease}
+  header.compact{padding-top:6px;padding-bottom:8px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+  .header-top{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;max-width:480px;margin:0 auto}
+  .header-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;max-width:480px;margin:0 auto}
   h1{font-size:18px;margin:0}
   .meta{display:flex;gap:10px;align-items:center}
   .small{font-size:13px;color:var(--muted)}
@@ -110,6 +112,7 @@
   @media(min-width:720px){
     body{padding:28px}
     .wrap{padding:18px}
+    header{top:0;margin-left:-28px;margin-right:-28px;padding-left:28px;padding-right:28px}
   }
 </style>
 </head>
@@ -818,6 +821,26 @@ if(themeToggleBtn){
     menuToggle.setAttribute('aria-expanded', 'false');
   });
 }
+
+/* Compact header on scroll */
+(function(){
+  const headerEl = document.querySelector('header');
+  if(!headerEl) return;
+  let ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY || window.pageYOffset;
+      if(y > 40) headerEl.classList.add('compact');
+      else headerEl.classList.remove('compact');
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  // run once to set initial state
+  onScroll();
+})();
 
 /* Fechar modal ao clicar fora */
 window.addEventListener('click', (event) => {
