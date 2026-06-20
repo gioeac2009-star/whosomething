@@ -248,7 +248,6 @@
     transform: translate(-50%, -4px); 
   }
 
-  /* Tipos de Feedback */
   .floating-feedback.success {
     background: rgba(34, 197, 94, 0.15); 
     border: 1px solid var(--good); 
@@ -307,6 +306,60 @@
   }
   .modal-button.ghost:hover { background: rgba(139, 92, 246, 0.05); }
   .dark-theme .modal-button.ghost:hover { background: rgba(255, 255, 255, 0.05); }
+
+  /* ---- INÍCIO DO CSS DO BANNER DE COOKIES ---- */
+  .cookie-banner {
+    position: fixed;
+    bottom: -150%;
+    left: 16px;
+    right: 16px;
+    max-width: 488px;
+    margin: 0 auto;
+    background: var(--card);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    padding: 16px 20px;
+    z-index: 9999; 
+    transition: bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+  }
+  .dark-theme .cookie-banner {
+    border-color: rgba(255,255,255,0.08);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  }
+  .cookie-banner.show {
+    bottom: 96px; /* Para logo acima do botão Próximo */
+  }
+  .cookie-content {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+    text-align: center;
+  }
+  .cookie-content p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .cookie-content button {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+  @media(min-width: 720px) {
+    .cookie-content {
+      flex-direction: row;
+      text-align: left;
+      justify-content: space-between;
+    }
+    .cookie-content button {
+      width: auto;
+      min-width: 140px;
+    }
+  }
+  /* ---- FIM DO CSS DO BANNER DE COOKIES ---- */
   
   @keyframes slideUp{
     from{transform:translateY(20px);opacity:0}
@@ -324,6 +377,15 @@
     }
   }
 </style>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-F278ZBYWC9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-F278ZBYWC9');
+</script>
 </head>
 <body>
   <div class="wrap" role="application" aria-label="Who's something mobile game">
@@ -435,7 +497,13 @@
     </div>
   </div>
 
-<script>
+  <div id="cookieConsent" class="cookie-banner">
+    <div class="cookie-content">
+      <p>Usamos cookies para analisar o tráfego e melhorar a sua experiência no jogo. Ao continuar navegando, você concorda com a coleta dessas métricas.</p>
+      <button id="acceptCookiesBtn" class="primary">Entendi</button>
+    </div>
+  </div>
+  <script>
 /* Mobile drag-to-insert ordering game (Archive Mode - No Saving/No Sharing) */
 
 let gameTheme = null; 
@@ -489,7 +557,7 @@ async function loadGameData() {
     if (!response.ok) throw new Error("Arquivo da edição não encontrado.");
 
     gameTheme = await response.json();
-    gameSubtitle.textContent = gameTheme.titulo; // Atualizado para receber apenas o título
+    gameSubtitle.textContent = gameTheme.titulo; 
     listTitleDesc.textContent = gameTheme.instrucao;
     
     // Cria IDs internos para os itens
@@ -857,6 +925,24 @@ if(themeToggleBtn){
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
 })();
+
+/* INÍCIO DA LÓGICA DO BANNER DE COOKIES */
+document.addEventListener("DOMContentLoaded", function() {
+  const cookieBanner = document.getElementById('cookieConsent');
+  const acceptBtn = document.getElementById('acceptCookiesBtn');
+  
+  if (!localStorage.getItem('cookiesAccepted')) {
+    setTimeout(() => {
+      cookieBanner.classList.add('show');
+    }, 1000); 
+  }
+
+  acceptBtn.addEventListener('click', () => {
+    localStorage.setItem('cookiesAccepted', 'true'); 
+    cookieBanner.classList.remove('show'); 
+  });
+});
+/* FIM DA LÓGICA DO BANNER DE COOKIES */
 
 </script>
 </body>
